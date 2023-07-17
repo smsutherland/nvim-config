@@ -1,6 +1,6 @@
 local lsp = require("lsp-zero").preset({})
 lsp.on_attach(function(client, bufnr)
---    lsp.default_keymaps({buffer = bufnr})
+    -- lsp.default_keymaps({buffer = bufnr})
     local opts = {buffer = bufnr, remap = false}
 
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -8,6 +8,9 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
     vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "<leader>ls", function()
+         require("telescope.builtin").lsp_document_symbols()
+     end)
 end)
 
 lsp.setup_servers({"rust_analyzer"})
