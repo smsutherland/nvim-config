@@ -4,13 +4,13 @@ local autocmd = vim.api.nvim_create_autocmd
 autocmd("TermClose", {
     pattern = "*lazygit",
     desc = "Refresh Neo-Tree git when closing lazygit",
-    group = augroup("neotree_git_refresh", {clear = true}),
+    group = augroup("neotree_git_refresh", { clear = true }),
     callback = function()
         if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
     end
 })
 
-local rel_num_ctrl = augroup("relative number control", {clear = true})
+local rel_num_ctrl = augroup("relative number control", { clear = true })
 autocmd("InsertEnter", {
     pattern = "*",
     desc = "Turn off relative numbers in insert mode",
@@ -31,7 +31,7 @@ autocmd("InsertLeave", {
 
 autocmd("TextYankPost", {
     desc = "Highlight yanked text",
-    group = augroup("highlightyank", {clear = true}),
+    group = augroup("highlightyank", { clear = true }),
     pattern = "*",
     callback = vim.highlight.on_yank
 })
