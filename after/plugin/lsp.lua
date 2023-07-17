@@ -11,7 +11,24 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>ls", function()
         require("telescope.builtin").lsp_document_symbols()
     end)
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+
+    local format_opts = {
+        format_on_save = { enabled = true },
+        disabled = {},
+    }
+
+    vim.keymap.set("n", "<leader>lf", function()
+        vim.lsp.buf.format(format_opts)
+    end)
+    vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+        vim.lsp.buf.format(format_opts)
+    end, { desc = "Format file with LSP" })
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        desc = "autoformat on save",
+        group = vim.api.nvim_create_augroup("format on save", { clear = true }),
+        callback = function() vim.lsp.buf.format(format_opts) end,
+    })
 end)
 
 lsp.setup_servers({ "rust_analyzer" })
