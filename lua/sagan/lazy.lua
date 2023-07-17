@@ -147,4 +147,5 @@ require("lazy").setup({
             }
         end
     },
+    "stevearc/dressing.nvim",
 }, {})
