@@ -16,6 +16,28 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim",
         tag = "0.1.2",
         dependencies = { "nvim-lua/plenary.nvim" },
+        opts = function()
+            local actions = require("telescope.actions")
+            return {
+                defaults = {
+                    layout_config = {
+                        horizontal = { prompt_position = "top", preview_width = 0.55, },
+                        vertical = { mirror = false, },
+                        width = 0.87,
+                        height = 0.80,
+                        preview_cutoff = 120,
+                    },
+                    sorting_strategy = "ascending",
+                    mappings = {
+                        n = { q = actions.close }
+                    },
+                },
+            }
+        end,
+        setup = function(_, opts)
+            local telescope = require("telescope")
+            telescope.setup(opts)
+        end
     },
     {
         "olimorris/onedarkpro.nvim",
@@ -84,7 +106,7 @@ require("lazy").setup({
             local function has_words_before()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return col ~= 0 and
-                vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
             end
 
             return {
