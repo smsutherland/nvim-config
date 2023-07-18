@@ -20,6 +20,7 @@ return {
                     folder_empty_open = get_icon("FolderEmpty"),
                     default = get_icon("DefaultFile"),
                 },
+                modified = { symbol = get_icon("FileModified") },
                 git_status = {
                     symbols = {
                         added = get_icon("GitAdd"),
@@ -41,7 +42,19 @@ return {
             },
             window = {
                 mappings = {
-                    ["<space>"] = false
+                    ["<space>"] = false,
+                    ["[b"] = "prev_source",
+                    ["]b"] = "next_source",
+                },
+            },
+            source_selector = {
+                winbar = true,
+                content_layout = "center",
+                sources = {
+                    { source = "filesystem",  display_name = get_icon("FolderClosed") .. "File" },
+                    { source = "buffers",     display_name = get_icon("DefaultFile") .. "Bufs" },
+                    { source = "git_status",  display_name = get_icon("Git") .. "Git" },
+                    { source = "disgnostics", display_name = get_icon("Diagnostic") .. "Diagnostic" },
                 },
             },
         }

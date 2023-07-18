@@ -1,7 +1,7 @@
 return {
     {
         "VonHeikemen/lsp-zero.nvim",
-        lazy = false,
+        event = "User File",
         branch = "v2.x",
         dependencies = {
             "neovim/nvim-lspconfig",
