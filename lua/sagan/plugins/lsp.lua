@@ -11,7 +11,7 @@ return {
         },
         init = function()
             local wk = require("which-key")
-            local lsp = require("lsp-zero").preset({})
+            local lsp = require("lsp-zero").preset({ setup_servers_on_start = false })
             lsp.on_attach(function(client, bufnr)
                 local format_opts = {
                     format_on_save = { enabled = true },
@@ -53,9 +53,11 @@ return {
                 })
             end)
 
+            local lspconfig = require("lspconfig")
+
             lsp.setup_servers({ "rust_analyzer" })
 
-            require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+            lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 
             lsp.setup()
         end
