@@ -69,6 +69,7 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/playground",
+        cmd = "TSPlaygroundToggle",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
     {
@@ -119,7 +120,7 @@ require("lazy").setup({
         end,
         opts = {}
     },
-    "mbbill/undotree",
+    { "mbbill/undotree", cmd = "UndotreeToggle" },
     {
         "kdheepak/lazygit.nvim",
         cmd = "LazyGit",
@@ -187,7 +188,16 @@ require("lazy").setup({
             }
         end
     },
-    "stevearc/dressing.nvim",
+    {
+        "stevearc/dressing.nvim",
+        init = function()
+            require("sagan.util").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" })
+        end,
+        opts = {
+            input = { default_prompt = "➤ " },
+            select = { backend = { "telescope", "builtin" } },
+        },
+    },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
