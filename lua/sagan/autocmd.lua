@@ -17,10 +17,20 @@ autocmd("BufEnter", {
     end
 })
 
+local nt_git = augroup("neotree_git_refresh", { clear = true })
+autocmd("BufWritePost", {
+    pattern = "*",
+    desc = "Refresh Neo-Tree git when saving a buffer",
+    group = nt_git,
+    callback = function()
+        if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+    end
+})
+
 autocmd("TermClose", {
     pattern = "*lazygit",
     desc = "Refresh Neo-Tree git when closing lazygit",
-    group = augroup("neotree_git_refresh", { clear = true }),
+    group = nt_git,
     callback = function()
         if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
     end
