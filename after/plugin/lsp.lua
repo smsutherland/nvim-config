@@ -6,10 +6,16 @@ lsp.on_attach(function(client, bufnr)
         disabled = {},
     }
 
-    wk.register({
-        g = {
-            d = { vim.lsp.buf.definition, "Go to Definition" },
+    wk.register(
+        {
+            g = {
+                d = { vim.lsp.buf.definition, "Go to Definition" },
+            },
         },
+        { mode = "n", buffer = bufnr }
+    )
+
+    wk.register({
         l = {
             name = "LSP",
             a = { vim.lsp.buf.code_action, "Code Actions" },
