@@ -29,7 +29,14 @@ require("lazy").setup({
                     },
                     sorting_strategy = "ascending",
                     mappings = {
-                        n = { q = actions.close }
+                        n = { q = actions.close },
+                        i = {
+                            ["<esc>"] = actions.close,
+                            ["<C-l>"] = actions.cycle_history_next,
+                            ["<C-h>"] = actions.cycle_history_prev,
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-k>"] = actions.move_selection_previous,
+                        },
                     },
                 },
             }
