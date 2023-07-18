@@ -19,8 +19,8 @@ vim.opt.virtualedit = "block"
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+vim.opt.showtabline = 2
 vim.opt.scrolloff = 8
-
 vim.opt.updatetime = 50
 
 vim.g.icons = "nerd"
