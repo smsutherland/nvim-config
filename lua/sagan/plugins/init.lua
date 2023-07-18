@@ -61,4 +61,26 @@ return {
         event = "InsertEnter",
         opts = {},
     },
+    {
+        "numToStr/Comment.nvim",
+        init = function()
+            local wk = require("which-key")
+
+            wk.register({
+                ["/"] = {
+                    function()
+                        require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1)
+                    end,
+                    "Toggle comment line",
+                },
+            }, { mode = "n", prefix = "<leader>" })
+
+            wk.register({
+                ["/"] = {
+                    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+                    "Toggle comment line",
+                },
+            }, { mode = "v", prefix = "<leader>" })
+        end
+    },
 }
