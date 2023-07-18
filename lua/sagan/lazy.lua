@@ -48,8 +48,10 @@ require("lazy").setup({
     },
     {
         "olimorris/onedarkpro.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
-            vim.cmd("colorscheme onedark_vivid")
+            vim.cmd.colorscheme("onedark_vivid")
         end,
     },
     {
@@ -72,6 +74,7 @@ require("lazy").setup({
     {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v3.x",
+        cmd = "Neotree",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons",
@@ -119,6 +122,7 @@ require("lazy").setup({
     "mbbill/undotree",
     {
         "kdheepak/lazygit.nvim",
+        cmd = "LazyGit",
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
@@ -184,4 +188,4 @@ require("lazy").setup({
         end
     },
     "stevearc/dressing.nvim",
-}, {})
+}, { defaults = { lazy = true } })
