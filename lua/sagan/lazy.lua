@@ -188,4 +188,9 @@ require("lazy").setup({
         end
     },
     "stevearc/dressing.nvim",
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        opts = {},
+    },
 }, { defaults = { lazy = true } })
