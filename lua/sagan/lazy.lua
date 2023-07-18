@@ -130,6 +130,7 @@ require("lazy").setup({
     },
     {
         "VonHeikemen/lsp-zero.nvim",
+        lazy = false,
         branch = "v2.x",
         dependencies = {
             "neovim/nvim-lspconfig",
