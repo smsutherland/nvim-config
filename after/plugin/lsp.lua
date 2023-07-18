@@ -1,25 +1,29 @@
+local wk = require("which-key")
 local lsp = require("lsp-zero").preset({})
 lsp.on_attach(function(client, bufnr)
-    -- lsp.default_keymaps({buffer = bufnr})
-    local opts = { buffer = bufnr, remap = false }
-
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
-    vim.keymap.set("n", "<leader>ls", function()
-        require("telescope.builtin").lsp_document_symbols()
-    end)
-
     local format_opts = {
         format_on_save = { enabled = true },
         disabled = {},
     }
 
-    vim.keymap.set("n", "<leader>lf", function()
-        vim.lsp.buf.format(format_opts)
-    end)
+    wk.register({
+        g = {
+            d = { vim.lsp.buf.definition, "Go to Definition" },
+        },
+        l = {
+            name = "LSP",
+            a = { vim.lsp.buf.code_action, "Code Actions" },
+            r = { vim.lsp.buf.rename, "Rename" },
+            d = { vim.lsp.diagnostic.open_float, "Show Diagnostics" },
+            s = { function() require("telescope.builtin").lsp_document_symbols() end, "Show Symbols" },
+            f = { function() vim.lsp.buf.format(format_opts) end, "Format" },
+        }
+    }, { mode = "n", prefix = "<leader>", buffer = bufnr })
+
+    wk.register({
+        K = { vim.lsp.buf.hover, "Hover Documentation" }
+    }, { mode = "n" })
+
     vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
         vim.lsp.buf.format(format_opts)
     end, { desc = "Format file with LSP" })

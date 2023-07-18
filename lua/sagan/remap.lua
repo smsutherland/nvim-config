@@ -1,4 +1,8 @@
 vim.g.mapleader = " "
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '>-3<CR>gv=gv")
+local wk = require("which-key")
+
+wk.register({
+    J = { ":m '>+1<CR>gv=gv", "Move selection down" },
+    K = { ":m '<-2<CR>gv=gv", "Move selection up" },
+}, { mode = "v" })
