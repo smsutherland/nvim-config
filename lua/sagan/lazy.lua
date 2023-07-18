@@ -108,6 +108,16 @@ require("lazy").setup({
                         },
                     },
                 },
+                filesystem = {
+                    follow_current_file = { enabled = true },
+                    hijack_netrw_behavior = "open_current",
+                    use_libuv_file_watched = true,
+                },
+                window = {
+                    mappings = {
+                        ["<space>"] = false
+                    },
+                },
             }
         end,
     },
