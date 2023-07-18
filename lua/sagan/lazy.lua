@@ -41,10 +41,6 @@ require("lazy").setup({
                 },
             }
         end,
-        setup = function(_, opts)
-            local telescope = require("telescope")
-            telescope.setup(opts)
-        end
     },
     {
         "olimorris/onedarkpro.nvim",
