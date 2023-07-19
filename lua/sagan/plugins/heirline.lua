@@ -1,3 +1,5 @@
+local colors = require("gruvbox.groups").setup()
+
 local function make_tabline()
     local conditions = require("heirline.conditions")
     local utils = require("heirline.utils")
@@ -19,7 +21,7 @@ local function make_tabline()
             condition = function(self)
                 return vim.api.nvim_buf_get_option(self.bufnr, "modified")
             end,
-            provider = get_icon("FileModified"),
+            provider = " " .. get_icon("FileModified"),
             hl = { fg = "green" },
         },
         {
@@ -34,7 +36,6 @@ local function make_tabline()
                     return get_icon("FileReadOnly")
                 end
             end,
-            hl = { fg = "orange" },
         },
     }
 
@@ -107,13 +108,15 @@ local function make_tabline()
         },
     }
 
-    local TablineBufferBlock = utils.surround({ "", "" }, function(self)
-        if self.is_active then
-            return utils.get_highlight("TabLineSel").bg
-        else
-            return utils.get_highlight("TabLine").bg
-        end
-    end, { TablineFileNameBlock, TablineCloseButton })
+    local TablineBufferBlock = utils.surround({ "", "" },
+        function(self)
+            if self.is_active then
+                return utils.get_highlight("TabLineSel").bg
+            else
+                return utils.get_highlight("TabLine").bg
+            end
+        end,
+        { TablineFileNameBlock, TablineCloseButton })
 
     local BufferLine = utils.make_buflist(
         TablineBufferBlock,
@@ -124,20 +127,34 @@ local function make_tabline()
     return {
         { -- file tree padding
             condition = function(self)
-                self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-                local filetypes = { "neo%-tree" }
-                for _, filetype in ipairs(filetypes) do
-                    if vim.bo[vim.api.nvim_win_get_buf(self.winid)].filetype:find(filetype) then
-                        return true
+                local filetypes = { "neo%-tree", "undotree" }
+                local wins = vim.api.nvim_tabpage_list_wins(0)
+                self.winids = {}
+                local result = false
+                for _, winid in ipairs(wins) do
+                    for _, filetype in ipairs(filetypes) do
+                        if vim.bo[vim.api.nvim_win_get_buf(winid)].filetype:find(filetype) then
+                            result = true
+                            self.winids[#self.winids + 1] = winid
+                        end
                     end
                 end
-                return false
+                return result
             end,
-            provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
-            hl = utils.get_highlight("TabLine"),
-
+            provider = function(self)
+                local length = 0
+                for _, winid in ipairs(self.winids) do
+                    length = length + vim.api.nvim_win_get_width(winid)
+                end
+                return string.rep(" ", length + 1)
+            end,
+            hl = { bg = utils.get_highlight("Normal").bg },
         },
         BufferLine,
+        {
+            provider = "%=",
+            hl = { bg = utils.get_highlight("Normal").bg },
+        },
     }
 end
 
