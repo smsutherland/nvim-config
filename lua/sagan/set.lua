@@ -22,6 +22,8 @@ vim.opt.incsearch = true
 vim.opt.showtabline = 2
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
+vim.opt.cmdheight = 0
+vim.opt.fillchars = { eob = " " }
 
 vim.g.icons = "nerd"
 vim.g.git_worktrees = nil
