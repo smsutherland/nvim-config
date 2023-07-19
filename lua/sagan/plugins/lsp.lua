@@ -4,9 +4,6 @@ return {
         event = "User File",
         branch = "v2.x",
         config = function()
-            local wk = require("which-key")
-            local lsp = require("lsp-zero.settings").preset({})
-
             local get_icon = require("sagan.icons").get_icon
             local signs = {
                 {
@@ -126,7 +123,6 @@ return {
             local lsp = require("lsp-zero")
 
             lsp.on_attach(function(_, bufnr)
-                print("lsp attach")
                 local wk = require("which-key")
 
                 local format_opts = {
@@ -165,7 +161,9 @@ return {
                 })
             end)
 
-            require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+            local lspconfig = require("lspconfig")
+            lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
+            lspconfig.rust_analyzer.setup({})
 
             lsp.setup()
         end
