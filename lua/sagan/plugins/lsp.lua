@@ -3,15 +3,9 @@ return {
         "VonHeikemen/lsp-zero.nvim",
         event = "User File",
         branch = "v2.x",
-        dependencies = {
-            "neovim/nvim-lspconfig",
-            "hrsh7th/nvim-cmp",
-            "hrsh7th/cmp-nvim-lsp",
-            "L3MON4D3/LuaSnip",
-        },
-        init = function()
+        config = function()
             local wk = require("which-key")
-            local lsp = require("lsp-zero").preset({ setup_servers_on_start = false })
+            local lsp = require("lsp-zero.settings").preset({})
 
             local get_icon = require("sagan.icons").get_icon
             local signs = {
@@ -64,62 +58,16 @@ return {
                     prefix = ","
                 },
             })
-
-            lsp.on_attach(function(client, bufnr)
-                local format_opts = {
-                    format_on_save = { enabled = true },
-                    disabled = {},
-                }
-
-                wk.register(
-                    {
-                        g = {
-                            d = { vim.lsp.buf.definition, "Go to Definition" },
-                        },
-                    },
-                    { mode = "n", buffer = bufnr }
-                )
-
-                wk.register({
-                    l = {
-                        name = "LSP",
-                        a = { vim.lsp.buf.code_action, "Code Actions" },
-                        r = { vim.lsp.buf.rename, "Rename" },
-                        d = { vim.diagnostic.open_float, "Show Diagnostics" },
-                        D = { function() require("telescope.builtin").diagnostics() end, "Show All Diagnostics" },
-                        s = { function() require("telescope.builtin").lsp_document_symbols() end, "Show Symbols" },
-                        f = { function() vim.lsp.buf.format(format_opts) end, "Format" },
-                    }
-                }, { mode = "n", prefix = "<leader>", buffer = bufnr })
-
-                wk.register({
-                    K = { vim.lsp.buf.hover, "Hover Documentation" }
-                }, { mode = "n" })
-
-                vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
-                    vim.lsp.buf.format(format_opts)
-                end, { desc = "Format file with LSP" })
-
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    desc = "autoformat on save",
-                    group = vim.api.nvim_create_augroup("format on save", { clear = true }),
-                    callback = function() vim.lsp.buf.format(format_opts) end,
-                })
-            end)
-
-            local lspconfig = require("lspconfig")
-
-            lsp.setup_servers({ "rust_analyzer" })
-
-            lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
-
-            lsp.setup()
         end
     },
     {
         "hrsh7th/nvim-cmp",
-        opts = function()
+        event = "InsertEnter",
+        dependencies = { "L3MON4D3/LuaSnip" },
+        config = function()
+            require("lsp-zero.cmp").extend()
             local cmp = require("cmp")
+            local cmp_action = require("lsp-zero.cmp").action()
             local luasnip = require("luasnip")
 
             local function has_words_before()
@@ -128,7 +76,8 @@ return {
                     vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
             end
 
-            return {
+
+            cmp.setup({
                 mapping = {
                     ["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
                     ["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
@@ -163,7 +112,62 @@ return {
                         end
                     end, { "i", "s" }),
                 },
-            }
+            })
+        end,
+    },
+    {
+        "neovim/nvim-lspconfig",
+        cmd = "LspInfo",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "Hrsh7th/cmp-nvim-lsp",
+        },
+        config = function()
+            local lsp = require("lsp-zero")
+
+            lsp.on_attach(function(_, bufnr)
+                print("lsp attach")
+                local wk = require("which-key")
+
+                local format_opts = {
+                    format_on_save = { enabled = true },
+                    disabled = {},
+                }
+
+                wk.register({
+                    g = {
+                        d = { vim.lsp.buf.definition, "Go to Definition" },
+                    },
+                    K = { vim.lsp.buf.hover, "Hover Documentation" }
+                }, { mode = "n", buffer = bufnr }
+                )
+
+                wk.register({
+                    l = {
+                        name = "LSP",
+                        a = { vim.lsp.buf.code_action, "Code Actions" },
+                        r = { vim.lsp.buf.rename, "Rename" },
+                        d = { vim.diagnostic.open_float, "Show Diagnostics" },
+                        D = { function() require("telescope.builtin").diagnostics() end, "Show All Diagnostics" },
+                        s = { function() require("telescope.builtin").lsp_document_symbols() end, "Show Symbols" },
+                        f = { function() vim.lsp.buf.format(format_opts) end, "Format" },
+                    }
+                }, { mode = "n", prefix = "<leader>", buffer = bufnr })
+
+                vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+                    vim.lsp.buf.format(format_opts)
+                end, { desc = "Format file with LSP" })
+
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    desc = "autoformat on save",
+                    group = vim.api.nvim_create_augroup("format on save", { clear = true }),
+                    callback = function() vim.lsp.buf.format(format_opts) end,
+                })
+            end)
+
+            require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+
+            lsp.setup()
         end
     },
     {
