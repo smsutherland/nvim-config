@@ -32,7 +32,8 @@ return {
                         name = "LSP",
                         a = { vim.lsp.buf.code_action, "Code Actions" },
                         r = { vim.lsp.buf.rename, "Rename" },
-                        d = { vim.lsp.diagnostic.open_float, "Show Diagnostics" },
+                        d = { vim.diagnostic.open_float, "Show Diagnostics" },
+                        D = { function() require("telescope.builtin").diagnostics() end, "Show Diagnostics" },
                         s = { function() require("telescope.builtin").lsp_document_symbols() end, "Show Symbols" },
                         f = { function() vim.lsp.buf.format(format_opts) end, "Format" },
                     }
