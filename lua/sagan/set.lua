@@ -24,6 +24,8 @@ vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
 vim.opt.cmdheight = 0
 vim.opt.fillchars = { eob = " " }
+vim.opt.laststatus = 3
+vim.opt.showcmdloc = "statusline"
 
 vim.g.icons = "nerd"
 vim.g.git_worktrees = nil
