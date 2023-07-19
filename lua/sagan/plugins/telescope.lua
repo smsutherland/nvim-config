@@ -9,8 +9,8 @@ return {
         return {
             defaults = {
                 git_wroktrees = vim.g.git_worktrees,
-                prompt_prefix = get_icon("Selected"),
-                selection_caret = get_icon("Selected"),
+                prompt_prefix = get_icon("Selected") .. " ",
+                selection_caret = get_icon("Selected") .. " ",
                 layout_config = {
                     horizontal = { prompt_position = "top", preview_width = 0.55, },
                     vertical = { mirror = false, },
