@@ -1,12 +1,13 @@
 return {
     {
-        "olimorris/onedarkpro.nvim",
+        "ellisonleao/gruvbox.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme("onedark_vivid")
+            vim.cmd.colorscheme("gruvbox")
         end,
     },
+    "olimorris/onedarkpro.nvim",
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
