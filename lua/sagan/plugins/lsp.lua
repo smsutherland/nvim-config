@@ -12,6 +12,59 @@ return {
         init = function()
             local wk = require("which-key")
             local lsp = require("lsp-zero").preset({ setup_servers_on_start = false })
+
+            local get_icon = require("sagan.icons").get_icon
+            local signs = {
+                {
+                    name = "DiagnosticSignError",
+                    text = get_icon("DiagnosticError"),
+                    texthl =
+                    "DiagnosticSignError"
+                },
+                {
+                    name = "DiagnosticSignWarn",
+                    text = get_icon("DiagnosticWarn"),
+                    texthl =
+                    "DiagnosticSignWarn"
+                },
+                {
+                    name = "DiagnosticSignHint",
+                    text = get_icon("DiagnosticHint"),
+                    texthl =
+                    "DiagnosticSignHint"
+                },
+                {
+                    name = "DiagnosticSignInfo",
+                    text = get_icon("DiagnosticInfo"),
+                    texthl =
+                    "DiagnosticSignInfo"
+                },
+                { name = "DapStopped",             text = get_icon("DapStopped"),             texthl = "DiagnosticWarn" },
+                { name = "DapBreakpoint",          text = get_icon("DapBreakpoint"),          texthl = "DiagnosticInfo" },
+                { name = "DapBreakpointRejected",  text = get_icon("DapBreakpointRejected"),  texthl = "DiagnosticError" },
+                { name = "DapBreakpointCondition", text = get_icon("DapBreakpointCondition"), texthl = "DiagnosticInfo" },
+                { name = "DapLogPoint",            text = get_icon("DapLogPoint"),            texthl = "DiagnosticInfo" },
+            }
+
+            for _, sign in ipairs(signs) do
+                vim.fn.sign_define(sign.name, sign)
+            end
+            vim.diagnostic.config({
+                virtual_text = true,
+                signs = { active = signs },
+                update_in_insert = true,
+                underline = true,
+                severity_sort = true,
+                float = {
+                    focused = false,
+                    style = "minimal",
+                    border = "rounded",
+                    source = "always",
+                    header = "",
+                    prefix = ","
+                },
+            })
+
             lsp.on_attach(function(client, bufnr)
                 local format_opts = {
                     format_on_save = { enabled = true },
