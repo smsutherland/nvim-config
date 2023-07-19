@@ -11,7 +11,7 @@ return {
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
-        init = function()
+        config = function(_, opts)
             vim.o.timeout = true
             vim.o.timeoutlen = 300
 
@@ -21,6 +21,16 @@ return {
                 J = { ":m '>+1<CR>gv=gv", "Move selection down" },
                 K = { ":m '<-2<CR>gv=gv", "Move selection up" },
             }, { mode = "v" })
+
+            wk.register({
+                H = { function() require("sagan.util.buffer").nav(-1) end, "Previous Buffer" },
+                L = { function() require("sagan.util.buffer").nav(1) end, "Next Buffer" },
+            }, { mode = "n" })
+
+            wk.register({
+                c = { function() require("sagan.util.buffer").close() end, "Close Buffer" },
+                C = { function() require("sagan.util.buffer").close(0, true) end, "Force Close Buffer" },
+            }, { mode = "n", prefix = "<leader>" })
         end,
         opts = {}
     },
@@ -84,4 +94,5 @@ return {
             }, { mode = "v", prefix = "<leader>" })
         end
     },
+    "echasnovski/mini.bufremove",
 }
