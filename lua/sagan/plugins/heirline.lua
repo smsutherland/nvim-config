@@ -199,7 +199,7 @@ local function make_statusline()
                 rm = "M",
                 ["r?"] = "?",
                 ["!"] = "!",
-                t = "T",
+                t = "--TER--",
             },
             mode_colors = {
                 n = "red",

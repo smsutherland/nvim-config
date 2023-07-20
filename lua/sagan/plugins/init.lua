@@ -95,4 +95,34 @@ return {
         end
     },
     "echasnovski/mini.bufremove",
+    {
+        "akinsho/toggleterm.nvim",
+        cmd = { "ToggleTerm", "ToggleTermSendCurrentLine", "ToggleTermSendVisualLines", "ToggleTermSendVisualSelection",
+            "ToggleTermSetName", "ToggleTermToggleAll" },
+        version = "*",
+        init = function()
+            local wk = require("which-key")
+
+            wk.register({
+                ["<f7>"] = { function() vim.cmd.ToggleTerm("direction=float") end, "ToggleTerm Float" },
+                ["<C-`>"] = { function() vim.cmd.ToggleTerm("direction=horizontal") end, "ToggleTerm Bottom" },
+            }, { mode = "n" })
+
+            wk.register({
+                ["<f7>"] = { function() vim.cmd.ToggleTerm("direction=float") end, "ToggleTerm Float" },
+                ["<C-`>"] = { function() vim.cmd.ToggleTerm("direction=horizontal") end, "ToggleTerm Bottom" },
+
+                ["<C-h>"] = { "<cmd>wincmd h<cr>", "Terminal left window navigation" },
+                ["<C-j>"] = { "<cmd>wincmd j<cr>", "Terminal down window navigation" },
+                ["<C-k>"] = { "<cmd>wincmd k<cr>", "Terminal up window navigation" },
+                ["<C-l>"] = { "<cmd>wincmd l<cr>", "Terminal right window navigation" },
+            }, { mode = "t" })
+        end,
+        opts = {
+            shading_factor = 2,
+            direction = "float",
+            float_opts = { border = "rounded" },
+        },
+        config = true,
+    }
 }
