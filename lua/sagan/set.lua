@@ -26,6 +26,7 @@ vim.opt.cmdheight = 0
 vim.opt.fillchars = { eob = " " }
 vim.opt.laststatus = 3
 vim.opt.showcmdloc = "statusline"
+vim.opt.clipboard = "unnamedplus"
 
 vim.g.icons = "nerd"
 vim.g.git_worktrees = nil
