@@ -118,7 +118,10 @@ local function make_tabline()
     local BufferLine = utils.make_buflist(
         TablineBufferBlock,
         { provider = "", hl = { fg = "gray" } },
-        { provider = "", hl = { fg = "gray" } }
+        { provider = "", hl = { fg = "gray" } },
+        function() return vim.t.bufs end,
+        -- nil,
+        false
     )
 
     return {

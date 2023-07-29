@@ -30,3 +30,5 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.g.icons = "nerd"
 vim.g.git_worktrees = nil
+
+vim.t.bufs = vim.t.bufs or vim.api.nvim_list_bufs()
