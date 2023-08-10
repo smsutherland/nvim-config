@@ -116,6 +116,8 @@ return {
                 ["<C-j>"] = { "<cmd>wincmd j<cr>", "Terminal down window navigation" },
                 ["<C-k>"] = { "<cmd>wincmd k<cr>", "Terminal up window navigation" },
                 ["<C-l>"] = { "<cmd>wincmd l<cr>", "Terminal right window navigation" },
+
+                ["<esc>"] = { [[<C-\><C-n>]], "Terminal go to normal mode." },
             }, { mode = "t" })
         end,
         opts = {
