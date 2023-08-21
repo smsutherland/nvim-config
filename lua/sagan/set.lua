@@ -38,16 +38,4 @@ vim.filetype.add({
         wiki = "wiki",
     }
 })
-vim.g.vimwiki_list = {
-    { path = "~/vimwiki" },
-    {
-        path = "~/student/text/",
-        name = "School Notes",
-        template_path = "~/student/templates/",
-        template_default = "main",
-        template_ext = ".html",
-        path_html = "~/student/html/",
-        auto_export = 1,
-        auto_toc = 1,
-    }
-}
+vim.g.vimwiki_list = { { path = "~/vimwiki" }, }
