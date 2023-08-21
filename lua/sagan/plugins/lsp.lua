@@ -60,7 +60,7 @@ return {
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
-        dependencies = { "L3MON4D3/LuaSnip" },
+        dependencies = { "L3MON4D3/LuaSnip", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-nvim-lsp" },
         config = function()
             require("lsp-zero.cmp").extend()
             local cmp = require("cmp")
@@ -109,6 +109,12 @@ return {
                         end
                     end, { "i", "s" }),
                 },
+                sources = cmp.config.sources({
+                    { name = "nvim_lsp", priority = 1000 },
+                    { name = "luasnip",  priority = 750 },
+                    { name = "buffer",   priority = 500 },
+                    { name = "path",     priority = 250 },
+                }),
             })
         end,
     },
@@ -117,7 +123,7 @@ return {
         cmd = "LspInfo",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            "Hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
             local lsp = require("lsp-zero")

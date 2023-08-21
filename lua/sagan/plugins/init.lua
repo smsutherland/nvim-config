@@ -126,5 +126,10 @@ return {
             float_opts = { border = "rounded" },
         },
         config = true,
+    },
+    {
+        "vimwiki/vimwiki",
+        keys = "<leader>w",
+        ft = "wiki"
     }
 }

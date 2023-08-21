@@ -32,3 +32,22 @@ vim.g.icons = "nerd"
 vim.g.git_worktrees = nil
 
 vim.t.bufs = vim.t.bufs or vim.api.nvim_list_bufs()
+
+vim.filetype.add({
+    extension = {
+        wiki = "wiki",
+    }
+})
+vim.g.vimwiki_list = {
+    { path = "~/vimwiki" },
+    {
+        path = "~/student/text/",
+        name = "School Notes",
+        template_path = "~/student/templates/",
+        template_default = "main",
+        template_ext = ".html",
+        path_html = "~/student/html/",
+        auto_export = 1,
+        auto_toc = 1,
+    }
+}
