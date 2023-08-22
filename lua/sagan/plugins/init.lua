@@ -31,6 +31,16 @@ return {
                 c = { function() require("sagan.util.buffer").close() end, "Close Buffer" },
                 C = { function() require("sagan.util.buffer").close(0, true) end, "Force Close Buffer" },
             }, { mode = "n", prefix = "<leader>" })
+
+            wk.register({
+                m = { function()
+                    if vim.opt.mouse._value == "nvi" then
+                        vim.opt.mouse = nil
+                    else
+                        vim.opt.mouse = "nvi"
+                    end
+                end, "Toggle mouse usage" }
+            }, { mode = "n", prefix = "<leader>" })
         end,
         opts = {}
     },
