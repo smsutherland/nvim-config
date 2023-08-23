@@ -18,6 +18,40 @@ autocmd("BufEnter", {
     end
 })
 
+autocmd({ "BufRead", "BufNewFile" }, {
+    desc = "Set Vimwiki which-key binds when appropriate",
+    group = augroup("vimwiki-keybinds", { clear = true }),
+    callback = function(args)
+        if not not require("lazy.core.config").plugins["vimwiki"]._.loaded then
+            if vim.fn["vimwiki#vars#get_bufferlocal"]('wiki_nr') ~= -1 then
+                local wk = require("which-key")
+                local buf = args.buf
+
+                wk.register({
+                    w = {
+                        h = {
+                            vim.cmd.Vimwiki2HTML,
+                            "Convert current page to HTML",
+                            h = { vim.cmd.Vimwiki2HTMLBrowse, "Convert current page to HTML and open" },
+                        },
+                        ["<leader>"] = {
+                            i = { vim.cmd.VimwikiDiaryGenerateLinks, "Generate diary links" },
+                        },
+                        c = { vim.cmd.VimwikiColorize, "Colorize line" },
+                        n = { vim.cmd.VimwikiGoto, "Goto or create new wiki page" },
+                        d = { vim.cmd.VimwikiDeleteFile, "Delete wiki page you are in" },
+                        r = { vim.cmd.VimwikiRenameFile, "Rename wiki page you are in" },
+                    }
+                }, { mode = "n", prefix = "<leader>", buffer = buf })
+
+                wk.register({
+                    c = { vim.cmd.VimwikiColorize, "Colorize selection" },
+                }, { mode = "v", prefix = "<leader>", buffer = buf })
+            end
+        end
+    end,
+})
+
 local nt_git = augroup("neotree_git_refresh", { clear = true })
 autocmd("BufWritePost", {
     pattern = "*",

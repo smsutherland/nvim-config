@@ -139,7 +139,30 @@ return {
     },
     {
         "vimwiki/vimwiki",
-        keys = "<leader>w",
-        ft = "wiki"
+        ft = "wiki",
+        cmd = { "VimwikiIndex", "VimwikiTabIndex", "VimwikiUISelect", "VimwikiVar", "VimwikiDiaryIndex",
+            "VimwikiMakeDiaryNote", "VimwikiTabMakeDiaryNote", "VimwikiMakeYesterdayDiaryNote",
+            "VimwikiMakeTomorrowDiaryNote" },
+        init = function()
+            local wk = require("which-key")
+
+            wk.register({
+                w = {
+                    name = "vimwiki",
+                    w = { "<cmd>VimwikiIndex<cr>", "Open default wiki index file" },
+                    t = { "<cmd>VimwikiTabIndex<cr>", "Open default wiki index file in a new tab" },
+                    s = { "<cmd>VimwikiUISelect<cr>", "Select and open wiki index file" },
+                    i = { "<cmd>VimwikiDiaryIndex", "Open default diary index" },
+                    ["<leader>"] = {
+                        name = "More vimwiki",
+                        i = { "<cmd>VimwikiDiaryGenerateLinks<cr>", "Generate diary links" },
+                        w = { "<cmd>VimwikiMakeDiaryNote<cr>", "Make diary note" },
+                        t = { "<cmd>VimwikiTabMakeDiaryNote<cr>", "Make diary note in new tab" },
+                        y = { "<cmd>VimwikiMakeYesterdayDiaryNote<cr>", "Make diary note for yesterday" },
+                        m = { "<cmd>VimwikiMakeTomorrowDiaryNote<cr>", "Make diary note for tomorrow" },
+                    }
+                }
+            }, { mode = "n", prefix = "<leader>" })
+        end,
     }
 }
