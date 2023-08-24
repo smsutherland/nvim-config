@@ -27,6 +27,8 @@ autocmd({ "BufRead", "BufNewFile" }, {
                 local wk = require("which-key")
                 local buf = args.buf
 
+                vim.opt_local.wrap = true;
+
                 wk.register({
                     w = {
                         h = {
