@@ -28,6 +28,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
                 local buf = args.buf
 
                 vim.opt_local.wrap = true;
+                vim.opt_local.linebreak = true;
 
                 wk.register({
                     w = {
