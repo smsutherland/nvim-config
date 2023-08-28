@@ -40,3 +40,10 @@ vim.filetype.add({
 })
 vim.g.vimwiki_list = { { path = "~/vimwiki" }, }
 vim.g.vimwiki_auto_chdir = 1
+
+vim.filetype.add({
+    extension = {
+        pynb = "pynb",
+    }
+})
+vim.g.magma_image_provider = "kitty"

@@ -167,3 +167,11 @@ autocmd("BufDelete", {
         vim.cmd.redrawtabline()
     end,
 })
+
+autocmd("BufEnter", {
+    desc = "Set pynb syntax to python",
+    group = augroup("pynbsyntax", { clear = true }),
+    callback = function()
+        vim.o.syntax = "python"
+    end,
+})

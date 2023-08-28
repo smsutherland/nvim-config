@@ -164,5 +164,30 @@ return {
                 }
             }, { mode = "n", prefix = "<leader>" })
         end,
+    },
+    {
+        "dccsillag/magma-nvim",
+        ft = "pynb",
+        command = "MagmaInit",
+        config = function()
+            vim.cmd.UpdateRemotePlugins()
+            vim.cmd.MagmaInit("python3")
+
+            local wk = require("which-key")
+
+            wk.register({
+                r = {
+                    r = { vim.cmd.MagmaEvaluateLine, "Evaluate python line" },
+                    c = { vim.cmd.MagmaReevaluateCell, "Reevaluate python cell" },
+                    d = { vim.cmd.MagmaDelete, "Delete python cell" },
+                },
+            }, { mode = "n", prefix = "<leader>" })
+
+            wk.register({
+                r = {
+                    r = { vim.cmd.MagmaEvaluateVisual, "Evaluate python selection" }
+                }
+            }, { mode = "v", prefix = "<leader>" })
+        end,
     }
 }
