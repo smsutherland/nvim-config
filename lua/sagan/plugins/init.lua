@@ -167,11 +167,9 @@ return {
     },
     {
         "dccsillag/magma-nvim",
-        ft = "pynb",
-        command = "MagmaInit",
+        ft = "python",
         config = function()
-            vim.cmd.UpdateRemotePlugins()
-            vim.cmd.MagmaInit("python3")
+            -- vim.cmd.UpdateRemotePlugins()
 
             local wk = require("which-key")
 

@@ -142,6 +142,7 @@ autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
         vim.api.nvim_exec_autocmds("User", { pattern = "BufsUpdated", modeline = false })
     end,
 })
+
 autocmd("BufDelete", {
     desc = "Update buffers when deleting buffers",
     group = bufferline_group,
@@ -165,13 +166,5 @@ autocmd("BufDelete", {
             vim.api.nvim_exec_autocmds("User", { pattern = "BufsUpdated", modeline = false })
         end
         vim.cmd.redrawtabline()
-    end,
-})
-
-autocmd("BufEnter", {
-    desc = "Set pynb syntax to python",
-    group = augroup("pynbsyntax", { clear = true }),
-    callback = function()
-        vim.o.syntax = "python"
     end,
 })
