@@ -175,7 +175,7 @@ return {
 
             wk.register({
                 r = {
-                    { vim.cmd.MagmaInit("python3"), "Initialize Magma for python" },
+                    { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
                     r = { vim.cmd.MagmaEvaluateLine, "Evaluate python line" },
                     c = { vim.cmd.MagmaReevaluateCell, "Reevaluate python cell" },
                     d = { vim.cmd.MagmaDelete, "Delete python cell" },
@@ -184,6 +184,7 @@ return {
 
             wk.register({
                 r = {
+                    { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
                     r = { vim.cmd.MagmaEvaluateVisual, "Evaluate python selection" }
                 }
             }, { mode = "v", prefix = "<leader>" })
