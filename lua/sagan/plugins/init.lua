@@ -167,7 +167,7 @@ return {
     },
     {
         "dccsillag/magma-nvim",
-        ft = "python",
+        keys = "<leader>r",
         config = function()
             -- vim.cmd.UpdateRemotePlugins()
 
@@ -175,6 +175,7 @@ return {
 
             wk.register({
                 r = {
+                    { vim.cmd.MagmaInit("python3"), "Initialize Magma for python" },
                     r = { vim.cmd.MagmaEvaluateLine, "Evaluate python line" },
                     c = { vim.cmd.MagmaReevaluateCell, "Reevaluate python cell" },
                     d = { vim.cmd.MagmaDelete, "Delete python cell" },
