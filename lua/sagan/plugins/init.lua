@@ -168,6 +168,17 @@ return {
     {
         "dccsillag/magma-nvim",
         keys = "<leader>r",
+        init = function()
+            local wk = require("which-key")
+
+            wk.register({
+                r = { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
+            }, { mode = "n", prefix = "<leader>" })
+
+            wk.register({
+                r = { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
+            }, { mode = "v", prefix = "<leader>" })
+        end,
         config = function()
             -- vim.cmd.UpdateRemotePlugins()
 
