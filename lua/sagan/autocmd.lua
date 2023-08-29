@@ -36,6 +36,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
                             vim.cmd.Vimwiki2HTML,
                             "Convert current page to HTML",
                             h = { vim.cmd.Vimwiki2HTMLBrowse, "Convert current page to HTML and open" },
+                            a = { vim.cmd.VimwikiAll2HTML, "Convert all pages to HTML" },
                         },
                         ["<leader>"] = {
                             i = { vim.cmd.VimwikiDiaryGenerateLinks, "Generate diary links" },
