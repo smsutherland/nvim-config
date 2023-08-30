@@ -114,6 +114,7 @@ return {
                     { name = "luasnip",  priority = 750 },
                     { name = "buffer",   priority = 500 },
                     { name = "path",     priority = 250 },
+                    { name = "omni" },
                 }),
             })
         end,
@@ -217,5 +218,9 @@ return {
             rt.setup(opts)
             rt.inlay_hints.enable()
         end,
+    },
+    {
+        "lervag/vimtex",
+        ft = "tex",
     },
 }
