@@ -47,4 +47,3 @@ vim.g.jukit_shell_cmd = "ipython"
 vim.g.jukit_terminal = "nvimterm"
 vim.g.jukit_mappings = 0
 vim.g.jukit_inline_plotting = 1
--- vim.g.jukit_custom_backend = -1
