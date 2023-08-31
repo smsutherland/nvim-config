@@ -42,3 +42,9 @@ vim.g.vimwiki_list = { { path = "~/vimwiki" }, }
 vim.g.vimwiki_auto_chdir = 1
 
 vim.g.magma_image_provider = "kitty"
+
+vim.g.jukit_shell_cmd = "ipython"
+vim.g.jukit_terminal = "nvimterm"
+vim.g.jukit_mappings = 0
+vim.g.jukit_inline_plotting = 1
+-- vim.g.jukit_custom_backend = -1
