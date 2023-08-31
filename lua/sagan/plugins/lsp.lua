@@ -177,6 +177,7 @@ return {
                 end,
             })
             lspconfig.jedi_language_server.setup({})
+            lspconfig.clangd.setup({})
 
             lsp.setup()
         end
