@@ -1,41 +1,5 @@
 return {
     {
-        "dccsillag/magma-nvim",
-        keys = "<leader>r",
-        init = function()
-            local wk = require("which-key")
-
-            wk.register({
-                r = { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
-            }, { mode = "n", prefix = "<leader>" })
-
-            wk.register({
-                r = { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
-            }, { mode = "v", prefix = "<leader>" })
-        end,
-        config = function()
-            -- vim.cmd.UpdateRemotePlugins()
-
-            local wk = require("which-key")
-
-            wk.register({
-                r = {
-                    { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
-                    r = { vim.cmd.MagmaEvaluateLine, "Evaluate python line" },
-                    c = { vim.cmd.MagmaReevaluateCell, "Reevaluate python cell" },
-                    d = { vim.cmd.MagmaDelete, "Delete python cell" },
-                },
-            }, { mode = "n", prefix = "<leader>" })
-
-            wk.register({
-                r = {
-                    { function() vim.cmd.MagmaInit("python3") end, "Initialize Magma for python" },
-                    r = { vim.cmd.MagmaEvaluateVisual, "Evaluate python selection" }
-                }
-            }, { mode = "v", prefix = "<leader>" })
-        end,
-    },
-    {
         "luk400/vim-jukit",
         ft = { "json", "python" },
         config = function()
