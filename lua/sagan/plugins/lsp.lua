@@ -172,11 +172,6 @@ return {
             local lspconfig = require("lspconfig")
             lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
             lspconfig.rust_analyzer.setup({})
-            lspconfig.pyright.setup({
-                on_attach = function(client)
-                    client.server_capabilities.completionProvider = false
-                end,
-            })
             lspconfig.jedi_language_server.setup({})
             lspconfig.clangd.setup({})
 
