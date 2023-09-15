@@ -172,7 +172,15 @@ return {
             local lspconfig = require("lspconfig")
             lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
             lspconfig.rust_analyzer.setup({})
-            lspconfig.jedi_language_server.setup({})
+            lspconfig.ruff_lsp.setup({
+                init_options = {
+                    settings = {
+                        args = {
+                            "--ignore", "E501", -- Line too long
+                        },
+                    },
+                },
+            })
             lspconfig.clangd.setup({})
 
             lsp.setup()
