@@ -18,6 +18,7 @@ vim.opt.virtualedit = "block"
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.guifont = "FiraCode Nerd Font SemBd"
 
 vim.opt.showtabline = 2
 vim.opt.scrolloff = 8
