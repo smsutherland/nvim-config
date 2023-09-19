@@ -18,6 +18,16 @@ autocmd("BufEnter", {
     end
 })
 
+autocmd({ "BufRead, BufNewFile" }, {
+    desc = "set settings for latex files",
+    pattern = "*.tex",
+    group = augroup("latex_settings", { clear = true }),
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+    end,
+})
+
 autocmd({ "BufRead", "BufNewFile" }, {
     desc = "Set Vimwiki which-key binds when appropriate",
     group = augroup("vimwiki-keybinds", { clear = true }),

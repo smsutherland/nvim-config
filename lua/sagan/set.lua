@@ -23,7 +23,7 @@ vim.opt.guifont = "FiraCode Nerd Font SemBd"
 vim.opt.showtabline = 2
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 vim.opt.fillchars = { eob = " " }
 vim.opt.laststatus = 3
 vim.opt.showcmdloc = "statusline"
