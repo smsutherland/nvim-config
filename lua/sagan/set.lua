@@ -46,3 +46,5 @@ vim.g.jukit_shell_cmd = "ipython"
 vim.g.jukit_terminal = "nvimterm"
 vim.g.jukit_mappings = 0
 vim.g.jukit_inline_plotting = 1
+
+vim.g.vimtex_view_method = "zathura"
