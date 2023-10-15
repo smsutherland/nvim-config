@@ -114,6 +114,7 @@ return {
                     { name = "nvim_lsp", priority = 1000 },
                     { name = "luasnip",  priority = 750 },
                     { name = "omni",     priority = 700 },
+                    { name = "copilot",  priority = 600 },
                     { name = "buffer",   priority = 500 },
                     { name = "path",     priority = 250 },
                 }),
@@ -182,6 +183,7 @@ return {
                 },
             })
             lspconfig.clangd.setup({})
+            lspconfig.zls.setup({})
 
             lsp.setup()
         end
@@ -227,5 +229,9 @@ return {
     {
         "lervag/vimtex",
         ft = "tex",
+    },
+    {
+        "ziglang/zig.vim",
+        ft = "zig",
     },
 }

@@ -165,4 +165,30 @@ return {
             }, { mode = "n", prefix = "<leader>" })
         end,
     },
+    {
+        "zbirenbaum/copilot.lua",
+        event = "InsertEnter",
+        opts = {
+            suggestion = { enabled = true },
+            panel = { enabled = false },
+        },
+        config = function(_, opts)
+            require("copilot").setup(opts)
+        end,
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        event = "InsertEnter",
+        dependencies = {
+            "zbirenbaum/copilot.lua",
+            "hrsh7th/nvim-cmp",
+        },
+        config = function(_, opts)
+            require("copilot_cmp").setup(opts)
+        end,
+    },
+    {
+        "mg979/vim-visual-multi",
+        event = "VeryLazy",
+    },
 }
