@@ -182,8 +182,13 @@ return {
                     },
                 },
             })
+            lspconfig.pyright.setup({})
+            lspconfig.jedi_language_server.setup({})
             lspconfig.clangd.setup({})
             lspconfig.zls.setup({})
+            lspconfig.hls.setup({
+                filetypes = { "haskell", "lhaskell", "cabal" },
+            })
 
             lsp.setup()
         end
