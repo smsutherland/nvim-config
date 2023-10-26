@@ -18,7 +18,7 @@ autocmd("BufEnter", {
     end
 })
 
-autocmd({ "BufRead, BufNewFile" }, {
+autocmd({ "BufRead", "BufNewFile" }, {
     desc = "set settings for latex files",
     pattern = "*.tex",
     group = augroup("latex_settings", { clear = true }),
