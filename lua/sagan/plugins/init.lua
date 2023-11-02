@@ -1,10 +1,66 @@
 return {
     {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000,
+        lazy = false,
+        opts = {
+            flavour = "frappe",
+            background = {
+                light = "latte",
+                dark = "frappe",
+            },
+            transparent_background = false,
+            show_end_of_buffer = true,
+            term_colors = true,
+            dim_inactive = {
+                enabled = true,
+                shade = "dark",
+                percentage = 0.15,
+            },
+            styles = {
+                comments = { "italic" },
+            },
+            integrations = {
+                cmp = true,
+                gitsigns = true,
+                neotree = true,
+                treesitter = true,
+                native_lsp = {
+                    enabled = true,
+                    virtual_text = {
+                        errors = { "italic" },
+                        hints = { "italic" },
+                        warnings = { "italic" },
+                        information = { "italic" },
+                    },
+                    underlines = {
+                        errors = { "italic" },
+                        hints = { "italic" },
+                        warnings = { "italic" },
+                        information = { "italic" },
+                    },
+                    inlay_hints = {
+                        background = true,
+                    },
+                },
+                telescope = {
+                    enabled = true,
+                },
+                which_key = true,
+            }
+        },
+        config = function(_, opts)
+            require("catppuccin").setup(opts)
+            vim.cmd.colorscheme("catppuccin")
+        end,
+    },
+    {
         "ellisonleao/gruvbox.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme("gruvbox")
+            -- vim.cmd.colorscheme("gruvbox")
         end,
     },
     "olimorris/onedarkpro.nvim",
@@ -190,5 +246,15 @@ return {
     {
         "mg979/vim-visual-multi",
         event = "VeryLazy",
+    },
+    {
+        "nvim-lualine/lualine.nvim",
+        event = "BufEnter",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            options = {
+                theme = "catppuccin",
+            },
+        },
     },
 }
