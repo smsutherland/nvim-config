@@ -39,6 +39,8 @@ return {
             f = {
                 name = "Files",
                 f = { function() require("telescope.builtin").find_files() end, "File Telescope" },
+                F = { function() require("telescope.builtin").find_files({ hidden = true, no_ignore = true }) end,
+                    "Hidden File Telescope" },
                 g = { function() require("telescope.builtin").git_files() end, "Git File Telescope" },
                 b = { function() require("telescope.builtin").buffers() end, "Find Buffers" },
                 w = { function() require("telescope.builtin").live_grep() end, "Find Words" },
