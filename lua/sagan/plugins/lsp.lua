@@ -61,12 +61,13 @@ return {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
         dependencies = { "L3MON4D3/LuaSnip", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-omni" },
+            "hrsh7th/cmp-omni", "onsails/lspkind.nvim" },
         config = function()
             require("lsp-zero.cmp").extend()
             local cmp = require("cmp")
-            local cmp_action = require("lsp-zero.cmp").action()
+            -- local cmp_action = require("lsp-zero.cmp").action()
             local luasnip = require("luasnip")
+            local lspkind = require("lspkind")
 
             local function has_words_before()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -111,14 +112,40 @@ return {
                     end, { "i", "s" }),
                 },
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp", priority = 1000 },
-                    { name = "luasnip",  priority = 750 },
-                    { name = "omni",     priority = 700 },
-                    { name = "path",     priority = 600 },
-                    { name = "copilot",  priority = 500 },
-                    { name = "buffer",   priority = 250 },
+                    { name = "nvim_lsp", priority = 1000, group_index = 1 },
+                    { name = "luasnip",  priority = 750,  group_index = 1 },
+                    { name = "omni",     priority = 700,  group_index = 1 },
+                    { name = "path",     priority = 600,  group_index = 1 },
+                    { name = "copilot",  priority = 500,  group_index = 2 },
+                    { name = "buffer",   priority = 250,  group_index = 2 },
                 }),
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = "symbol_text",
+                        -- menu = {
+                        --     buffer = "[Buffer]",
+                        --     nvim_lsp = "[LSP]",
+                        --     luasnip = "[Snip]",
+                        --     nvim_lua = "[Lua]",
+                        --     latex_symbols = "[LaTeX]",
+                        -- },
+                        maxwidth = 50,
+                        ellipsis_char = "...",
+                    }),
+                }
             })
+        end,
+    },
+    {
+        "onsails/lspkind.nvim",
+        opts = {
+            symbol_map = {
+                Copilot = "",
+            }
+        },
+        config = function(_, opts)
+            local lspkind = require("lspkind")
+            lspkind.init(opts)
         end,
     },
     {

@@ -225,7 +225,7 @@ return {
         "zbirenbaum/copilot.lua",
         event = "InsertEnter",
         opts = {
-            suggestion = { enabled = true },
+            suggestion = { enabled = false },
             panel = { enabled = false },
         },
         config = function(_, opts)
