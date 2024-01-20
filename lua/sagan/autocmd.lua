@@ -19,9 +19,9 @@ autocmd("BufEnter", {
 })
 
 autocmd({ "BufRead", "BufNewFile" }, {
-    desc = "set settings for latex files",
-    pattern = "*.tex",
-    group = augroup("latex_settings", { clear = true }),
+    desc = "set settings for spelling",
+    pattern = { "*.tex", "*.wiki" },
+    group = augroup("spelling", { clear = true }),
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
