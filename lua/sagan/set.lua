@@ -47,5 +47,5 @@ vim.g.jukit_mappings = 0
 
 vim.g.vimtex_view_method = "zathura"
 vim.g.tex_conceal = "abdmgs"
-vim.g.conceallevel = 2
+vim.opt.conceallevel = 2
 vim.g.tex_flavor = "latex"
