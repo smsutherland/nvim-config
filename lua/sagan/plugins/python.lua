@@ -3,6 +3,9 @@ return {
         "luk400/vim-jukit",
         ft = { "json", "python" },
         config = function()
+            vim.g.jukit_shell_cmd = "ipython"
+            vim.g.jukit_terminal = "kitty"
+            vim.g.jukit_inline_plotting = 1
             vim.g.jukit_mpl_style = vim.fn["jukit#util#plugin_path"]() ..
                 '/helpers/matplotlib-backend-kitty/backend.mplstyle'
             local wk = require("which-key")
@@ -11,6 +14,21 @@ return {
                 n = {
                     p = { function() vim.fn["jukit#convert#notebook_convert"]("jupyter-notebook") end,
                         "Convert between .ipynb and .py" },
+                    m = {
+                        function()
+                            if vim.g.jukit_terminal == "kitty" then
+                                vim.g.jukit_terminal = "nvimterm"
+                                vim.g.jukit_inline_plotting = 0
+                                vim.g.jukit_mpl_style = ""
+                            else
+                                vim.g.jukit_terminal = "kitty"
+                                vim.g.jukit_inline_plotting = 1
+                                vim.g.jukit_mpl_style = vim.fn["jukit#util#plugin_path"]() ..
+                                    '/helpers/matplotlib-backend-kitty/backend.mplstyle'
+                            end
+                        end,
+                        "Switch between jukit backends",
+                    },
                     c = {
                         name = "cell operations",
                         o = { function() vim.fn["jukit#cells#create_below"](0) end, "Create a new code cell below" },
