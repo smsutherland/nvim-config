@@ -242,10 +242,6 @@ return {
                 server = {
                     on_attach = function(_, bufnr)
                         wk.register({
-                            a = { rt.code_action_group.code_action_group, "" },
-                        }, { mode = "n", prefix = "<leader>", buffer = bufnr })
-
-                        wk.register({
                             ["<C-space>"] = { rt.hover_actions.hover_actions, "" },
                         }, { mode = "n", buffer = bufnr })
                     end,

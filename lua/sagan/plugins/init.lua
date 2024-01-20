@@ -35,10 +35,10 @@ return {
                         information = { "italic" },
                     },
                     underlines = {
-                        errors = { "italic" },
-                        hints = { "italic" },
-                        warnings = { "italic" },
-                        information = { "italic" },
+                        errors = { "underline" },
+                        hints = { "underline" },
+                        warnings = { "underline" },
+                        information = { "underline" },
                     },
                     inlay_hints = {
                         background = true,
@@ -263,4 +263,11 @@ return {
             },
         },
     },
+    {
+        "norcalli/nvim-colorizer.lua",
+        event = "VeryLazy",
+        config = function(_, opts)
+            require("colorizer").setup()
+        end,
+    }
 }
