@@ -257,6 +257,7 @@ return {
     {
         "lervag/vimtex",
         ft = "tex",
+        cmd = "VimtexInverseSearch",
     },
     {
         "ziglang/zig.vim",
