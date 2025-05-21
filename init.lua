@@ -141,7 +141,7 @@ require("lazy").setup({
   },
   {
     -- autocompletion
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     -- Only load this plugin once the startup process is complete.
     event = "VimEnter",
     -- If we don't specify a version here, then we have to compile the rust portion of the plugin on every update.
@@ -159,7 +159,12 @@ require("lazy").setup({
   {
     -- Default LSP configs and utilities.
     "neovim/nvim-lspconfig",
+    dependencies = {
+      -- Allow completion functionality.
+      "saghen/blink.cmp",
+    },
     config = function()
+      -- Set up lua-language-server
       require("lspconfig").lua_ls.setup({
         on_init = function(client)
           if client.workspace_folders then
@@ -190,6 +195,56 @@ require("lazy").setup({
       })
 
       require("lspconfig").rust_analyzer.setup({})
+
+      -- Function which calls when an LSP attaches to a buffer.
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp-mappings", { clear = true }),
+        -- The actual function which calls on an LSP attaching.
+        callback = function(event)
+          local wk = require("which-key")
+
+          -- Helper function for making custom maps.
+          -- Defaults to normal "n" mode.
+          -- Precedes descriptions with "LSP: ".
+          -- Specifies keymaps are only for the buffer which the LSP attached to.
+          ---@param keys string
+          ---@param func function
+          ---@param desc string
+          ---@param mode string?
+          local map = function(keys, func, desc, mode)
+            mode = mode or "n"
+            wk.add({keys, func, mode = mode, buffer = event.buf, desc = "LSP: " .. desc })
+          end
+
+          local function telescope(fun)
+            return function()
+              require("telescope.builtin")[fun]()
+            end
+          end
+
+          map("<leader>cr", vim.lsp.buf.rename, "[R]ename")
+          map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+          map("<leader>cs", telescope("lsp_document_symbols"), "Document [S]ymbols")
+          map("<leader>cS", telescope("lsp_workspace_symbols"), "Workspace [S]ymbols")
+          map("<leader>cd", vim.diagnostic.open_float, "")
+          map("grr", telescope("lsp_references"), "[G]oto [R]eferences")
+          map("gri", telescope("lsp_implementations"), "[G]oto [I]mplementations")
+          map("grd", telescope("lsp_definitions"), "[G]oto [D]efinition")
+          map("gy", telescope("lsp_type_definitions"), "[G]oto t[Y]pe Definitions")
+
+
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            wk.add({
+              "<leader>ui", function()
+                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                end, buffer = event.buf, desc = "[T]oggle [I]nlay Hints", icon=function ()
+                  return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or { icon = "󰨚", color = "yellow" }
+                end,
+            })
+          end
+        end,
+      })
     end,
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "LspInfo", "LspInstall", "LspUninstall" },
@@ -197,6 +252,7 @@ require("lazy").setup({
   {
     -- File explorer
     "stevearc/oil.nvim",
+    cmd = "Oil",
     ---@module "oil"
     ---@type oil.SetupOpts
     opts = {
@@ -208,7 +264,6 @@ require("lazy").setup({
     },
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
-    lazy = false,
   },
   {
     -- Key preview.
@@ -221,8 +276,17 @@ require("lazy").setup({
         mappings = vim.g.have_nerd_font,
         keys = {},
       },
+      spec = {
+        { "<leader>c", group = "[C]ode" },
+        { "<leader>u", group = "[U]I" },
+      },
     },
-  }
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "Telescope" },
+  },
 })
 
 -- vim: ts=2 sts=2 sw=2 et
