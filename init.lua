@@ -140,7 +140,7 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
 
 -- LaTeX autocmd
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  desc = "set settings for LaTeX",
+  desc = "set settings for spelling",
   pattern = { "*.tex", },
   group = vim.api.nvim_create_augroup("LaTeX", { clear = true }),
   callback = function()
@@ -154,18 +154,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
--- Wiki autocmd
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  desc = "set settings for wiki",
-  pattern = { "*.wiki", },
-  group = vim.api.nvim_create_augroup("wiki", { clear = true }),
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = "en_us"
-  end,
-})
 
 --------------------------------------
 ---------------LAZY.NVIM--------------
@@ -483,7 +471,6 @@ require("lazy").setup({
         { "<leader>c", group = "[C]ode", icon = "󰅩" },
         { "<leader>f", group = "[F]ind", icon = "󰍉" },
         { "<leader>u", group = "[U]i", icon = { icon = "󰙵", color = "cyan" } },
-        { "<leader>w", group = "Vim[W]iki", icon = { icon = "󰖬", color = "green" } },
         { "g", group = "[G]o" }
       }
     },
@@ -561,29 +548,6 @@ require("lazy").setup({
     keys = {
       { "<localleader>l", "", desc = "+vimtex", ft = "tex" },
     }
-  },
-  {
-    "vimwiki/vimwiki",
-    ft = "vimwiki",
-    cmd = {
-      -- All global vimwiki commands.
-      -- See :h vimwiki-global-commands.
-      "VimwikiMakeTomorrowDiaryNote",
-      "VimwikiMakeYesterdayDiaryNote",
-      "VimwikiTabMakeDiaryNote",
-      "VimwikiMakeDiaryNote",
-      "VimwikiDiaryIndex",
-      "VimwikiVar",
-      "VimwikiUISelect",
-      "VimwikiTabIndex",
-      "VimwikiIndex",
-    },
-    keys = {
-      { "<leader>wi", desc = "VimwikiDiaryIndex" },
-      { "<leader>ws", desc = "VimwikiUISelect" },
-      { "<leader>wt", desc = "VimwikiTabIndex" },
-      { "<leader>ww", desc = "VimwikiIndex" },
-    },
   },
   {
     "knubie/vim-kitty-navigator",
