@@ -244,8 +244,17 @@ require("lazy").setup({
               desc = "[T]oggle [I]nlay Hints",
               icon = function()
                 return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or
-                { icon = "󰨚", color = "yellow" }
+                    { icon = "󰨚", color = "yellow" }
               end,
+            })
+          end
+
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting, event.buf) then
+            wk.add({
+              "<leader>cf",
+              vim.lsp.buf.format,
+              buffer = event.buf,
+              desc = "[F]ormat",
             })
           end
         end,
