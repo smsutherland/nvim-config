@@ -139,23 +139,6 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
   end,
 })
 
--- LaTeX autocmd
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  desc = "set settings for spelling",
-  pattern = { "*.tex", },
-  group = vim.api.nvim_create_augroup("LaTeX", { clear = true }),
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = "en_us"
-
-    local wk = require("which-key")
-    wk.add({ "<localleader>l", group = "[L]atex", icon = { icon = "", color = "green" } })
-  end,
-})
-
-
 --------------------------------------
 ---------------LAZY.NVIM--------------
 --------------------------------------
@@ -191,7 +174,6 @@ require("lazy").setup({
       highlight = {
         -- use treesitter to highlight, rather than default vim highlighting.
         enable = true,
-        disable = { "latex" },
       },
     },
   },
@@ -550,21 +532,6 @@ require("lazy").setup({
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       }
     },
-  },
-  {
-    "lervag/vimtex",
-    -- vimtex doesn't handle lazy loading well.
-    lazy = false,
-    config = function()
-      vim.g.vimtex_mappings_disable = { ["n"] = { "K" } }
-      vim.g.vimtex_quickfix_method = "pplatex"
-      vim.g.vimtex_view_method = "zathura"
-      vim.g.vimtex_syntax_enabled = 1
-      vim.o.conceallevel = 2
-    end,
-    keys = {
-      { "<localleader>l", "", desc = "+vimtex", ft = "tex" },
-    }
   },
   {
     "knubie/vim-kitty-navigator",
