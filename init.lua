@@ -7,7 +7,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- I have a nerd font! Let's use it.
-vim.g.have_nerd_fomt = true
+vim.g.have_nerd_font = true
 
 -- Display relative line numbers.
 vim.o.number = true
@@ -164,6 +164,8 @@ require("lazy").setup({
       "saghen/blink.cmp",
     },
     config = function()
+      local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
+
       -- Set up lua-language-server
       require("lspconfig").lua_ls.setup({
         on_init = function(client)
@@ -189,59 +191,78 @@ require("lazy").setup({
             }
           })
         end,
+        capabilities = blink_capabilities,
         settings = {
           Lua = {}
         }
       })
 
-      require("lspconfig").rust_analyzer.setup({})
+      require("lspconfig").rust_analyzer.setup({
+        capabilities = blink_capabilities,
+      })
 
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-mappings", { clear = true }),
         -- The actual function which calls on an LSP attaching.
         callback = function(event)
+          -- Set keybinds through which-key to better use its features.
           local wk = require("which-key")
 
-          -- Helper function for making custom maps.
-          -- Defaults to normal "n" mode.
-          -- Precedes descriptions with "LSP: ".
-          -- Specifies keymaps are only for the buffer which the LSP attached to.
-          ---@param keys string
-          ---@param func function
-          ---@param desc string
-          ---@param mode string?
-          local map = function(keys, func, desc, mode)
-            mode = mode or "n"
-            wk.add({ keys, func, mode = mode, buffer = event.buf, desc = "LSP: " .. desc })
-          end
-
+          -- Lazily require telescope, otherwise it loads immediately.
+          ---@param fun string
+          ---@return function
           local function telescope(fun)
             return function()
               require("telescope.builtin")[fun]()
             end
           end
 
-          map("<leader>cr", vim.lsp.buf.rename, "[R]ename")
-          map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-          map("<leader>cs", telescope("lsp_document_symbols"), "Document [S]ymbols")
-          map("<leader>cS", telescope("lsp_workspace_symbols"), "Workspace [S]ymbols")
-          map("<leader>cd", vim.diagnostic.open_float, "")
-          map("grr", telescope("lsp_references"), "[G]oto [R]eferences")
-          map("gri", telescope("lsp_implementations"), "[G]oto [I]mplementations")
-          map("grd", telescope("lsp_definitions"), "[G]oto [D]efinition")
-          map("gy", telescope("lsp_type_definitions"), "[G]oto t[Y]pe Definitions")
+          -- Add all binds in a single wk call.
+          wk.add({
+            {
+              -- Create a group called "Code".
+              "<leader>c",
+              group = "[C]ode",
+              -- The whole group is normal mode only.
+              mode = "n",
+              buffer = event.buf,
+              -- All the binds in the group.
+              -- Note that we have to specify "<leader>c" even though they are in the group.
+              { "<leader>cr", vim.lsp.buf.rename,                 desc = "[R]ename" },
+              { "<leader>ca", vim.lsp.buf.code_action,            desc = "[C]ode [A]ction" },
+              { "<leader>cs", telescope("lsp_document_symbols"),  desc = "Document [S]ymbols" },
+              { "<leader>cS", telescope("lsp_workspace_symbols"), desc = "Workspace [S]ymbols" },
+              { "<leader>cd", vim.diagnostic.open_float,          desc = "Show [D]iagnostics" },
+            },
+            {
+              "g",
+              group = "[G]o",
+              buffer = event.buf,
+              mode = "n",
+              { "grr", telescope("lsp_references"),       desc = "[G]oto [R]eferences" },
+              { "gri", telescope("lsp_implementations"),  desc = "[G]oto [I]mplementations" },
+              { "grd", telescope("lsp_definitions"),      desc = "[G]oto [D]efinition" },
+              { "gy",  telescope("lsp_type_definitions"), desc = "[G]oto t[Y]pe Definitions" },
+            }
+          })
 
-
+          -- Our LSP client
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+          -- Only provide the option to toggle inlay hints if the LSP supports inlay hints.
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             wk.add({
               "<leader>ui",
               function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
               end,
+              mode = "n",
               buffer = event.buf,
               desc = "[T]oggle [I]nlay Hints",
+              -- which-key feature: set an icon for the binding.
+              -- If inlay hints are enabled, green on switch.
+              -- Otherwise, yellow off switch.
               icon = function()
                 return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or
                     { icon = "󰨚", color = "yellow" }
@@ -249,15 +270,43 @@ require("lazy").setup({
             })
           end
 
+          -- Only bind a formatting key if the lsp supports it.
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting, event.buf) then
             wk.add({
               "<leader>cf",
+              mode = "n",
               vim.lsp.buf.format,
               buffer = event.buf,
               desc = "[F]ormat",
             })
           end
         end,
+      })
+
+      vim.diagnostic.config({
+        severity_sort = true,
+        float = { border = "rounded", source = "if_many" },
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚',
+            [vim.diagnostic.severity.WARN] = '󰀪',
+            [vim.diagnostic.severity.INFO] = '󰋽',
+            [vim.diagnostic.severity.HINT] = '󰌶',
+          }
+        },
+        virtual_text = {
+          source = 'if_many',
+          spacing = 2,
+          format = function(diagnostic)
+            local diagnostic_message = {
+              [vim.diagnostic.severity.ERROR] = diagnostic.message,
+              [vim.diagnostic.severity.WARN] = diagnostic.message,
+              [vim.diagnostic.severity.INFO] = diagnostic.message,
+              [vim.diagnostic.severity.HINT] = diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+          end,
+        },
       })
     end,
     event = { "BufReadPost", "BufNewFile" },
@@ -289,10 +338,6 @@ require("lazy").setup({
       icons = {
         mappings = vim.g.have_nerd_font,
         keys = {},
-      },
-      spec = {
-        { "<leader>c", group = "[C]ode" },
-        { "<leader>u", group = "[U]I" },
       },
     },
   },
