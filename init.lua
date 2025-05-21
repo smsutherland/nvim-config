@@ -64,9 +64,9 @@ vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>")
 -- <C-c> to close it up again.
 -- "g?" to see keymaps while in Oil.
 vim.keymap.set("n", "-",
-function()
-  require("oil").open_float()
-end)
+  function()
+    require("oil").open_float()
+  end)
 
 --------------------------------------
 ------------AUTOCOMMANDS--------------
@@ -169,7 +169,7 @@ require("lazy").setup({
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
-            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path.."/.luarc.json") or vim.uv.fs_stat(path.."/.luarc.jsonc")) then
+            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
               return
             end
           end
@@ -213,7 +213,7 @@ require("lazy").setup({
           ---@param mode string?
           local map = function(keys, func, desc, mode)
             mode = mode or "n"
-            wk.add({keys, func, mode = mode, buffer = event.buf, desc = "LSP: " .. desc })
+            wk.add({ keys, func, mode = mode, buffer = event.buf, desc = "LSP: " .. desc })
           end
 
           local function telescope(fun)
@@ -236,11 +236,16 @@ require("lazy").setup({
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             wk.add({
-              "<leader>ui", function()
-                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-                end, buffer = event.buf, desc = "[T]oggle [I]nlay Hints", icon=function ()
-                  return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or { icon = "󰨚", color = "yellow" }
-                end,
+              "<leader>ui",
+              function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+              end,
+              buffer = event.buf,
+              desc = "[T]oggle [I]nlay Hints",
+              icon = function()
+                return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or
+                { icon = "󰨚", color = "yellow" }
+              end,
             })
           end
         end,
