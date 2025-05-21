@@ -60,6 +60,14 @@ vim.o.confirm = true
 -- When in normal mode "n", hit escape "<esc>" to turn off highlights from a search.
 vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>")
 
+-- open oil in a floating window.
+-- <C-c> to close it up again.
+-- "g?" to see keymaps while in Oil.
+vim.keymap.set("n", "-",
+function()
+  require("oil").open_float()
+end)
+
 --------------------------------------
 ------------AUTOCOMMANDS--------------
 --------------------------------------
@@ -187,17 +195,33 @@ require("lazy").setup({
     cmd = { "LspInfo", "LspInstall", "LspUninstall" },
   },
   {
-    'stevearc/oil.nvim',
-    ---@module 'oil'
+    -- File explorer
+    "stevearc/oil.nvim",
+    ---@module "oil"
     ---@type oil.SetupOpts
     opts = {
-      keymaps = {
-        ["-"] = { "actions.parent", mode = "n" },
+      float = {
+        -- Only use 50% of the height and width to display the float
+        max_height = 0.5,
+        max_width = 0.5,
       },
     },
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
     lazy = false,
+  },
+  {
+    -- Key preview.
+    "folke/which-key.nvim",
+    -- Only load once vim has finished initializing.
+    event = "VimEnter",
+    opts = {
+      delay = 0,
+      icons = {
+        mappings = vim.g.have_nerd_font,
+        keys = {},
+      },
+    },
   }
 })
 
