@@ -66,13 +66,31 @@ vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>")
 vim.keymap.set("n", "-",
   function()
     require("oil").open_float()
-  end)
+  end, { desc = "Open Oil" })
+
+-- Telescope keybinds for searching files
+
+-- Find files.
+vim.keymap.set("n", "<leader>ff", function()
+  require("telescope.builtin").find_files()
+end, { desc = "[F]ind [F]iles" })
+
+-- Find files including hidden or ignored files.
+vim.keymap.set("n", "<leader>fF", function()
+  require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
+end, { desc = "[F]ind All [F]iles" })
+
+-- Use ripgrep to search for a string in all files.
+vim.keymap.set("n", "<leader>fw", function()
+  require("telescope.builtin").live_grep()
+end, { desc = "Ripgrep" })
 
 --------------------------------------
 ------------AUTOCOMMANDS--------------
 --------------------------------------
 -- See :h lua-guide-autocommands
 
+-- Highlight text when yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking",
   group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
@@ -80,10 +98,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.hl.on_yank()
   end,
 })
-
---------------------------------------
---------------LSP-CONFIG--------------
---------------------------------------
 
 --------------------------------------
 ---------------LAZY.NVIM--------------
@@ -221,10 +235,6 @@ require("lazy").setup({
           -- Add all binds in a single wk call.
           wk.add({
             {
-              -- Create a group called "Code".
-              "<leader>c",
-              group = "[C]ode",
-              -- The whole group is normal mode only.
               mode = "n",
               buffer = event.buf,
               -- All the binds in the group.
@@ -234,10 +244,9 @@ require("lazy").setup({
               { "<leader>cs", telescope("lsp_document_symbols"),  desc = "Document [S]ymbols" },
               { "<leader>cS", telescope("lsp_workspace_symbols"), desc = "Workspace [S]ymbols" },
               { "<leader>cd", vim.diagnostic.open_float,          desc = "Show [D]iagnostics" },
+              { "<leader>cD", telescope("diagnostics"),           desc = "Show All [D]iagnostics" },
             },
             {
-              "g",
-              group = "[G]o",
               buffer = event.buf,
               mode = "n",
               { "grr", telescope("lsp_references"),       desc = "[G]oto [R]eferences" },
@@ -334,17 +343,68 @@ require("lazy").setup({
     -- Only load once vim has finished initializing.
     event = "VimEnter",
     opts = {
+      -- put the which-key display in the bottom right.
+      preset = "helix",
       delay = 0,
       icons = {
         mappings = vim.g.have_nerd_font,
         keys = {},
       },
+      spec = {
+        { "<leader>c", group = "[C]ode", icon = "󰅩" },
+        { "<leader>f", group = "[F]ind", icon = "󰍉" },
+        { "<leader>u", group = "[U]i", icon = { icon = "󰔢", color = "green" } },
+        { "g", group = "[G]o" }
+      }
     },
   },
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        cond = function()
+          return vim.fn.executable("make") == 1
+        end
+      },
+      "nvim-telescope/telescope-ui-select.nvim",
+    },
     cmd = { "Telescope" },
+    config = function()
+      require("telescope").setup({
+        defaults = {
+          layout_config = {
+            horizontal = { prompt_position = "top", preview_width = 0.55, },
+            vertical = { mirror = false, },
+            width = 0.87,
+            height = 0.8,
+            preview_cutoff = 120,
+          },
+          sorting_strategy = "ascending",
+        },
+        extensions = {
+          -- use a native fzf made just for telescope, allowing us to find things faster.
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          },
+          -- I set this up so that lsp.code_action uses a little telescope popup.
+          -- I don't know how to get it to only do this to lsp.code_action.
+          -- I'd imagine there are some ui selections which I don't want to have as telescope and to popup by my cursor.
+          ["ui-select"] = {
+            require("telescope.themes").get_cursor(),
+          },
+        },
+      })
+
+      -- These have to go after setup in order for telescope to work right.
+      require("telescope").load_extension("fzf")
+      require("telescope").load_extension("ui-select")
+    end,
   },
 })
 
