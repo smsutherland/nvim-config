@@ -18,7 +18,7 @@ vim.o.relativenumber = true
 -- This increases startup time by delaying this action.
 -- We won't be copying anything until that point, so it doesn't affect anything user-facing.
 vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
+  vim.o.clipboard = "unnamedplus"
 end)
 
 -- When wrapping lines, indent the wrap to the same as the original line.
@@ -66,12 +66,16 @@ vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>")
 -- See :h lua-guide-autocommands
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking",
-	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
-	callback = function()
-		vim.hl.on_yank()
-	end,
+  desc = "Highlight when yanking",
+  group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
 })
+
+--------------------------------------
+--------------LSP-CONFIG--------------
+--------------------------------------
 
 --------------------------------------
 ---------------LAZY.NVIM--------------
@@ -109,6 +113,92 @@ require("lazy").setup({
       },
     },
   },
+  {
+    -- catppuccin colorscheme
+    "catppuccin/nvim",
+    -- The plugin is called "catppuccin", not "nvim"
+    name = "catppuccin",
+    -- This plugin is not lazy. It will be loaded on start up with a high priority.
+    priority = 1000,
+    opts = {
+      -- I like to have mocha as my default catppuccin colorscheme
+      -- The other flavors are available as catppuccin-<flavor>
+      flavour = "mocha"
+    },
+    -- When the plugin loads on startup, set it up and set the colorscheme.
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
+  {
+    -- autocompletion
+    'saghen/blink.cmp',
+    -- Only load this plugin once the startup process is complete.
+    event = "VimEnter",
+    -- If we don't specify a version here, then we have to compile the rust portion of the plugin on every update.
+    version = "1.*",
+    opts = {
+      sources = {
+        -- Where do we want to autocomplete from?
+        default = { "lsp", "path", "snippets" },
+      },
+      keymap = {
+        preset = "enter",
+      },
+    },
+  },
+  {
+    -- Default LSP configs and utilities.
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("lspconfig").lua_ls.setup({
+        on_init = function(client)
+          if client.workspace_folders then
+            local path = client.workspace_folders[1].name
+            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path.."/.luarc.json") or vim.uv.fs_stat(path.."/.luarc.jsonc")) then
+              return
+            end
+          end
+
+          client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+            runtime = {
+              -- Tell the language server which version of Lua you"re using
+              -- (most likely LuaJIT in the case of Neovim)
+              version = "LuaJIT"
+            },
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME
+              }
+            }
+          })
+        end,
+        settings = {
+          Lua = {}
+        }
+      })
+
+      require("lspconfig").rust_analyzer.setup({})
+    end,
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "LspInfo", "LspInstall", "LspUninstall" },
+  },
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {
+      keymaps = {
+        ["-"] = { "actions.parent", mode = "n" },
+      },
+    },
+    -- Optional dependencies
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    lazy = false,
+  }
 })
 
 -- vim: ts=2 sts=2 sw=2 et
