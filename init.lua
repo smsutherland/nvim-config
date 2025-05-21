@@ -126,6 +126,8 @@ require("lazy").setup({
     build = ":TSUpdate",
     -- Call "nvim-treesitter.configs.setup(opts)" instead of "nvim-treesitter.setup(opts)"
     main = "nvim-treesitter.configs",
+    ---@module "nvim-treesitter"
+    ---@type TSConfig
     opts = {
       -- These parsers should always be installed.
       ensure_installed = { "vim", "vimdoc", "lua" },
@@ -142,10 +144,34 @@ require("lazy").setup({
     name = "catppuccin",
     -- This plugin is not lazy. It will be loaded on start up with a high priority.
     priority = 1000,
+    ---@module "catppuccin"
+    ---@type CatppuccinOptions
     opts = {
       -- I like to have mocha as my default catppuccin colorscheme
       -- The other flavors are available as catppuccin-<flavor>
-      flavour = "mocha"
+      flavour = "mocha",
+      integrations = {
+        blink_cmp = true,
+        treesitter = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "underline" },
+            hints = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+            ok = { "underline" },
+          },
+          inlay_hints = {
+            background = true,
+          },
+        },
+        telescope = {
+          enabled = true,
+        },
+        which_key = true,
+      },
+      kitty = true,
     },
     -- When the plugin loads on startup, set it up and set the colorscheme.
     config = function(_, opts)
@@ -160,15 +186,38 @@ require("lazy").setup({
     event = "VimEnter",
     -- If we don't specify a version here, then we have to compile the rust portion of the plugin on every update.
     version = "1.*",
+    ---@module "blink-cmp"
+    ---@type blink.cmp.Config
     opts = {
       sources = {
         -- Where do we want to autocomplete from?
-        default = { "lsp", "path", "snippets" },
+        default = { "lsp", "path", "snippets", "lazydev" },
+        providers = {
+          lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+        }
+      },
+      appearance = {
+        -- Adjusts spacing for the monospace font.
+        nerd_font_variant = "mono",
+      },
+      completion = {
+        documentation = { auto_show = true, auto_show_delay_ms = 500, },
       },
       keymap = {
         preset = "enter",
       },
+      signature = { enabled = true },
     },
+    dependencies = {
+      -- We don't need to load lazydev every time we load blink.cmp.
+      -- We only want it if we have a lua file.
+      -- That's why we don't specify it as a dependency here.
+      -- It seems to work just fine.
+      -- {
+      --   "folke/lazydev.nvim",
+      --   ft = "lua",
+      -- },
+    }
   },
   {
     -- Default LSP configs and utilities.
@@ -207,7 +256,10 @@ require("lazy").setup({
         end,
         capabilities = blink_capabilities,
         settings = {
-          Lua = {}
+          Lua = {
+            completion = { callSnipped = "Replace", },
+            diagnostics = { disable = { "missing-fields" } },
+          }
         }
       })
 
@@ -253,6 +305,7 @@ require("lazy").setup({
               { "gri", telescope("lsp_implementations"),  desc = "[G]oto [I]mplementations" },
               { "grd", telescope("lsp_definitions"),      desc = "[G]oto [D]efinition" },
               { "gy",  telescope("lsp_type_definitions"), desc = "[G]oto t[Y]pe Definitions" },
+              { "gd",  vim.lsp.buf.definition,            desc = "[G]oto [D]efinition" },
             }
           })
 
@@ -342,6 +395,8 @@ require("lazy").setup({
     "folke/which-key.nvim",
     -- Only load once vim has finished initializing.
     event = "VimEnter",
+    ---@module "which-key"
+    ---@type wk.Opts
     opts = {
       -- put the which-key display in the bottom right.
       preset = "helix",
@@ -405,6 +460,19 @@ require("lazy").setup({
       require("telescope").load_extension("fzf")
       require("telescope").load_extension("ui-select")
     end,
+  },
+  {
+    -- Better lua_ls for nvim config.
+    "folke/lazydev.nvim",
+    ft = "lua",
+    ---@module "lazydev"
+    ---@type lazydev.Config
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found.
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      }
+    },
   },
 })
 
