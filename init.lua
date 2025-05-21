@@ -231,10 +231,7 @@ require("lazy").setup({
     opts = {
       sources = {
         -- Where do we want to autocomplete from?
-        default = { "lsp", "path", "snippets", "lazydev" },
-        providers = {
-          lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
-        }
+        default = { "lsp", "path", "snippets" },
       },
       appearance = {
         -- Adjusts spacing for the monospace font.
@@ -248,16 +245,6 @@ require("lazy").setup({
       },
       signature = { enabled = true },
     },
-    dependencies = {
-      -- We don't need to load lazydev every time we load blink.cmp.
-      -- We only want it if we have a lua file.
-      -- That's why we don't specify it as a dependency here.
-      -- It seems to work just fine.
-      -- {
-      --   "folke/lazydev.nvim",
-      --   ft = "lua",
-      -- },
-    }
   },
   {
     -- Default LSP configs and utilities.
@@ -269,41 +256,7 @@ require("lazy").setup({
     config = function()
       local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- Set up lua-language-server
-      vim.lsp.config["luals"] = {
-        on_init = function(client)
-          if client.workspace_folders then
-            local path = client.workspace_folders[1].name
-            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
-              return
-            end
-          end
-
-          client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-            runtime = {
-              -- Tell the language server which version of Lua you"re using
-              -- (most likely LuaJIT in the case of Neovim)
-              version = "LuaJIT"
-            },
-            -- Make the server aware of Neovim runtime files
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                vim.env.VIMRUNTIME
-              }
-            }
-          })
-        end,
-        capabilities = blink_capabilities,
-        settings = {
-          Lua = {
-            completion = { callSnipped = "Replace", },
-            diagnostics = { disable = { "missing-fields" } },
-          }
-        }
-      }
-
-      vim.lsp.config["rust_analyzer"] = {
+      vim.lsp.config["rust-analyzer"] = {
         capabilities = blink_capabilities,
       }
 
@@ -519,19 +472,6 @@ require("lazy").setup({
       require("telescope").load_extension("fzf")
       require("telescope").load_extension("ui-select")
     end,
-  },
-  {
-    -- Better lua_ls for nvim config.
-    "folke/lazydev.nvim",
-    ft = "lua",
-    ---@module "lazydev"
-    ---@type lazydev.Config
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found.
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      }
-    },
   },
   {
     "knubie/vim-kitty-navigator",
