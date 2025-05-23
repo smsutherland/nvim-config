@@ -452,7 +452,7 @@ require("lazy").setup({
       spec = {
         { "<leader>c", group = "[C]ode", icon = "󰅩" },
         { "<leader>f", group = "[F]ind", icon = "󰍉" },
-        { "<leader>u", group = "[U]i", icon = { icon = "󰔢", color = "green" } },
+        { "<leader>u", group = "[U]i", icon = { icon = "󰙵", color = "cyan" } },
         { "<leader>w", group = "Vim[W]iki", icon = { icon = "󰖬", color = "green" } },
         { "g", group = "[G]o" }
       }
