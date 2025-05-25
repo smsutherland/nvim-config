@@ -92,6 +92,11 @@ vim.keymap.set("n", "<leader>fw", function()
   require("telescope.builtin").live_grep()
 end, { desc = "Ripgrep" })
 
+-- Use ripgrep to search for a string in all files.
+vim.keymap.set("n", "<leader>fb", function()
+  require("telescope.builtin").buffers()
+end, { desc = "[B]uffers" })
+
 --------------------------------------
 ------------AUTOCOMMANDS--------------
 --------------------------------------
