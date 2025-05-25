@@ -53,6 +53,13 @@ vim.o.scrolloff = 10
 -- ':q!' still quits without saving.
 vim.o.confirm = true
 
+-- Set tabs to be 4 spaces
+vim.o.ts = 4
+vim.o.sts = 4
+vim.o.sw = 4
+-- replace tabs with spaces
+vim.o.et = true
+
 --------------------------------------
 --------------KEYBINDS----------------
 --------------------------------------
