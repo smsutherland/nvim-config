@@ -567,6 +567,19 @@ require("lazy").setup({
       { "<leader>ww", desc = "VimwikiIndex" },
     },
   },
+  {
+    "knubie/vim-kitty-navigator",
+    build = "cp ./*.py ~/.config/kitty/",
+    init = function()
+      vim.g.kitty_navigator_no_mappings = 1
+    end,
+    keys = {
+      { "<c-`>h", "<cmd>KittyNavigateLeft<cr>", silent = true },
+      { "<c-`>j", "<cmd>KittyNavigateDown<cr>", silent = true },
+      { "<c-`>k", "<cmd>KittyNavigateUp<cr>", silent = true },
+      { "<c-`>l", "<cmd>KittyNavigateRight<cr>", silent = true },
+    },
+  },
 })
 
 -- vim: ts=2 sts=2 sw=2 et
