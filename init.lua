@@ -330,6 +330,9 @@ require("lazy").setup({
         capabilities = blink_capabilities,
       })
 
+      require("lspconfig").ruff.setup({})
+      require("lspconfig").ty.setup({})
+      require("lspconfig").pyright.setup({})
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-mappings", { clear = true }),
