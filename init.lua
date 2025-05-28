@@ -62,6 +62,11 @@ vim.o.sw = 4
 -- replace tabs with spaces
 vim.o.et = true
 
+-- When searching, be case-insensitive...
+vim.o.ignorecase = true
+-- ...unless our search query has different cases in it.
+vim.o.smartcase = true
+
 --------------------------------------
 --------------KEYBINDS----------------
 --------------------------------------
