@@ -250,6 +250,8 @@ require("lazy").setup({
     -- Default LSP configs and utilities.
     "neovim/nvim-lspconfig",
     dependencies = {
+      { 'mason-org/mason.nvim', opts = {} },
+      'mason-org/mason-lspconfig.nvim',
       -- Allow completion functionality.
       "saghen/blink.cmp",
     },
