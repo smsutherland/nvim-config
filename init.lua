@@ -435,7 +435,7 @@ require("lazy").setup({
       })
     end,
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "LspInfo", "LspInstall", "LspUninstall" },
+    cmd = { "LspInfo" },
   },
   {
     -- File explorer
