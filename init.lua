@@ -23,6 +23,8 @@ end)
 
 -- When wrapping lines, indent the wrap to the same as the original line.
 vim.o.breakindent = true
+-- Don't wrap lines by default
+vim.o.wrap = false
 
 -- Store undo history in a file, so that it persists between sessions.
 vim.o.undofile = true
