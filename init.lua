@@ -592,9 +592,9 @@ require("lazy").setup({
       vim.g.kitty_navigator_no_mappings = 1
     end,
     keys = {
-      { "<c-`>h", "<cmd>KittyNavigateLeft<cr>", silent = true },
-      { "<c-`>j", "<cmd>KittyNavigateDown<cr>", silent = true },
-      { "<c-`>k", "<cmd>KittyNavigateUp<cr>", silent = true },
+      { "<c-`>h", "<cmd>KittyNavigateLeft<cr>",  silent = true },
+      { "<c-`>j", "<cmd>KittyNavigateDown<cr>",  silent = true },
+      { "<c-`>k", "<cmd>KittyNavigateUp<cr>",    silent = true },
       { "<c-`>l", "<cmd>KittyNavigateRight<cr>", silent = true },
     },
   },
