@@ -453,6 +453,8 @@ require("lazy").setup({
     ---@module "oil"
     ---@type oil.SetupOpts
     opts = {
+      default_file_explorer = true,
+      skip_confirm_for_simple_edits = true,
       float = {
         -- Only use 50% of the height and width to display the float
         max_height = 0.5,
