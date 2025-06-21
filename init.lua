@@ -67,6 +67,12 @@ vim.o.ignorecase = true
 -- ...unless our search query has different cases in it.
 vim.o.smartcase = true
 
+-- Only worry about neovide-specific options if we're actually in neovide.
+if vim.g.neovide then
+  -- Make neovide text smaller
+  vim.g.neovide_scale_factor = 0.8
+end
+
 --------------------------------------
 --------------KEYBINDS----------------
 --------------------------------------
