@@ -341,6 +341,14 @@ require("lazy").setup({
       vim.lsp.enable("pyright")
       vim.lsp.enable("taplo")
 
+      require("lspconfig").zls.setup({
+        settings = {
+          zls = {
+            semantic_tokens = "partial",
+          },
+        },
+      })
+
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-mappings", { clear = true }),
