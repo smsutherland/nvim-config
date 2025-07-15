@@ -341,6 +341,7 @@ require("lazy").setup({
       vim.lsp.enable("ty")
       vim.lsp.enable("pyright")
       vim.lsp.enable("taplo")
+      vim.lsp.enable("texlab")
 
       require("lspconfig").zls.setup({
         settings = {
@@ -610,5 +611,6 @@ require("lazy").setup({
     },
   },
 })
+
 
 -- vim: ts=2 sts=2 sw=2 et
