@@ -71,6 +71,7 @@ vim.o.smartcase = true
 if vim.g.neovide then
   -- Make neovide text smaller
   vim.g.neovide_scale_factor = 0.8
+  vim.o.guifont = "FiraCode Nerd Font SemBd"
 end
 
 --------------------------------------
