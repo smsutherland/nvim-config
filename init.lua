@@ -158,7 +158,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 -- Wiki autocmd
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   desc = "set settings for wiki",
-  pattern = { "*.wiki", },
+  pattern = { "*.wiki", "*.md" },
   group = vim.api.nvim_create_augroup("wiki", { clear = true }),
   callback = function()
     vim.opt_local.wrap = true
