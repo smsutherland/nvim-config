@@ -342,6 +342,7 @@ require("lazy").setup({
       vim.lsp.enable("pyright")
       vim.lsp.enable("taplo")
       vim.lsp.enable("texlab")
+      vim.lsp.enable("clangd")
 
       require("lspconfig").zls.setup({
         settings = {
@@ -398,6 +399,8 @@ require("lazy").setup({
 
           -- Only provide the option to toggle inlay hints if the LSP supports inlay hints.
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            -- Default inlay hints to on.
+            vim.lsp.inlay_hint.enable(true)
             wk.add({
               "<leader>ui",
               function()
