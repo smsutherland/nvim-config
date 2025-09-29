@@ -199,7 +199,7 @@ require("lazy").setup({
     ---@type TSConfig
     opts = {
       -- These parsers should always be installed.
-      ensure_installed = { "vim", "vimdoc", "lua", "latex", "bibtex" },
+      ensure_installed = { "vim", "vimdoc", "lua" },
       highlight = {
         -- use treesitter to highlight, rather than default vim highlighting.
         enable = true,
@@ -572,6 +572,8 @@ require("lazy").setup({
       vim.g.vimtex_mappings_disable = { ["n"] = { "K" } }
       vim.g.vimtex_quickfix_method = "pplatex"
       vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_syntax_enabled = 1
+      vim.o.conceallevel = 2
     end,
     keys = {
       { "<localleader>l", "", desc = "+vimtex", ft = "tex" },
