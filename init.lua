@@ -74,6 +74,9 @@ if vim.g.neovide then
   vim.o.guifont = "FiraCode Nerd Font SemBd"
 end
 
+-- vim.g.loaded_python3_provider = 1
+vim.g.python3_host_prog = "/mnt/home/ssutherland/.virtualenvs/neovim/bin/python"
+
 --------------------------------------
 --------------KEYBINDS----------------
 --------------------------------------
@@ -507,7 +510,21 @@ require("lazy").setup({
     keys = {
       { "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" }
     }
-  }
+  },
+  {
+    "luk400/vim-jukit",
+    ft = "python",
+    init = function()
+      vim.g.jukit_inline_plotting = 1
+      vim.g.jukit_save_output = 0
+      vim.g.jukit_terminal = "tmux"
+      vim.g.jukit_mappings = 1
+      vim.g.jukit_mappings_ext_enabled = {"py", "ipynb"}
+    end,
+    config = function()
+      vim.g.jukit_mpl_style = vim.fn["jukit#util#plugin_path"]() .. '/helpers/matplotlib-backend-kitty/backend.mplstyle'
+    end
+  },
 })
 
 
