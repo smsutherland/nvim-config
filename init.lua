@@ -300,7 +300,7 @@ require("lazy").setup({
       local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
 
       -- Set up lua-language-server
-      require("lspconfig").lua_ls.setup({
+      vim.lsp.config["luals"] = {
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
@@ -331,11 +331,11 @@ require("lazy").setup({
             diagnostics = { disable = { "missing-fields" } },
           }
         }
-      })
+      }
 
-      require("lspconfig").rust_analyzer.setup({
+      vim.lsp.config["rust_analyzer"] = {
         capabilities = blink_capabilities,
-      })
+      }
 
       vim.lsp.enable("ruff")
       vim.lsp.enable("ty")
@@ -344,13 +344,13 @@ require("lazy").setup({
       vim.lsp.enable("texlab")
       vim.lsp.enable("clangd")
 
-      require("lspconfig").zls.setup({
+      vim.lsp.config["zls"] = {
         settings = {
           zls = {
             semantic_tokens = "partial",
           },
         },
-      })
+      }
 
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
