@@ -261,24 +261,17 @@ require("lazy").setup({
     config = function()
       local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      vim.lsp.config["rust-analyzer"] = {
+      vim.lsp.config("rust-analyzer", {
         capabilities = blink_capabilities,
-      }
+      })
 
-      vim.lsp.enable("ruff")
-      vim.lsp.enable("ty")
-      vim.lsp.enable("pyright")
-      vim.lsp.enable("taplo")
-      vim.lsp.enable("texlab")
-      vim.lsp.enable("clangd")
-
-      vim.lsp.config["zls"] = {
+      vim.lsp.config("zls", {
         settings = {
           zls = {
             semantic_tokens = "partial",
           },
         },
-      }
+      })
 
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
