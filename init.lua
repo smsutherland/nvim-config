@@ -142,6 +142,19 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
   end,
 })
 
+-- select LSPs
+vim.lsp.enable({
+  "lua_ls",
+  "ruff",
+  "ty",
+  "pyright",
+  "taplo",
+  "texlab",
+  "clangd",
+  "rust_analyzer",
+  "zls",
+})
+
 --------------------------------------
 ---------------LAZY.NVIM--------------
 --------------------------------------
