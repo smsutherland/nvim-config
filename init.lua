@@ -168,6 +168,19 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
+-- select LSPs
+vim.lsp.enable({
+  "lua_ls",
+  "ruff",
+  "ty",
+  "pyright",
+  "taplo",
+  "texlab",
+  "clangd",
+  "rust_analyzer",
+  "zls",
+})
+
 --------------------------------------
 ---------------LAZY.NVIM--------------
 --------------------------------------
@@ -300,7 +313,7 @@ require("lazy").setup({
       local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
 
       -- Set up lua-language-server
-      vim.lsp.config["luals"] = {
+      vim.lsp.config("lua_ls", {
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
@@ -331,26 +344,19 @@ require("lazy").setup({
             diagnostics = { disable = { "missing-fields" } },
           }
         }
-      }
+      })
 
-      vim.lsp.config["rust_analyzer"] = {
+      vim.lsp.config("rust_analyzer", {
         capabilities = blink_capabilities,
-      }
+      })
 
-      vim.lsp.enable("ruff")
-      vim.lsp.enable("ty")
-      vim.lsp.enable("pyright")
-      vim.lsp.enable("taplo")
-      vim.lsp.enable("texlab")
-      vim.lsp.enable("clangd")
-
-      vim.lsp.config["zls"] = {
+      vim.lsp.config("zls", {
         settings = {
           zls = {
             semantic_tokens = "partial",
           },
         },
-      }
+      })
 
       -- Function which calls when an LSP attaches to a buffer.
       vim.api.nvim_create_autocmd("LspAttach", {
