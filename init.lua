@@ -641,7 +641,11 @@ require("lazy").setup({
     keys = {
       { "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" }
     }
-  }
+  },
+  {
+    "j-hui/fidget.nvim",
+    opts = {},
+  },
 })
 
 
