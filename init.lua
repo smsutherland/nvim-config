@@ -155,6 +155,7 @@ vim.lsp.enable({
   "zls",
 })
 
+
 --------------------------------------
 ---------------LAZY.NVIM--------------
 --------------------------------------
@@ -182,16 +183,50 @@ require("lazy").setup({
     branch = "main",
     -- When updating or installing the plugin, run ":TSUpdate"
     build = ":TSUpdate",
-    ---@module "nvim-treesitter"
-    ---@type TSConfig
+    -- Treesitter does not support lazy loading
+    lazy = false,
+    opts_extend = { "ensure_installed" },
     opts = {
-      -- These parsers should always be installed.
-      ensure_installed = { "vim", "vimdoc", "lua" },
-      highlight = {
-        -- use treesitter to highlight, rather than default vim highlighting.
-        enable = true,
+      ensure_installed = {
+        "bash",
+        "fish",
+        "c",
+        "diff",
+        "html",
+        "json",
+        "lua",
+        "luadoc",
+        "luap",
+        "markdown",
+        "markdown_inline",
+        "printf",
+        "python",
+        "query",
+        "regex",
+        "toml",
+        "vim",
+        "vimdoc",
+        "xml",
+        "yaml",
       },
     },
+    config = function()
+      local TS = require("nvim-treesitter")
+
+      TS.setup(opts)
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
+        callback = function(ev)
+          local ft, lang = ev.match, vim.treesitter.language.get_lang(ev.match)
+
+          if not vim.tbl_contains(require("nvim-treesitter").get_installed("parsers"), ft) then
+            return
+          end
+
+          pcall(vim.treesitter.start, ev.buf)
+        end,
+      })
+    end
   },
   {
     -- catppuccin colorscheme
