@@ -178,10 +178,10 @@ require("lazy").setup({
   {
     -- Treesitter gives us better syntax highlighting
     'nvim-treesitter/nvim-treesitter',
+    -- nvim-treesitter uses the main branch now. master is obsolete.
+    branch = "main",
     -- When updating or installing the plugin, run ":TSUpdate"
     build = ":TSUpdate",
-    -- Call "nvim-treesitter.configs.setup(opts)" instead of "nvim-treesitter.setup(opts)"
-    main = "nvim-treesitter.configs",
     ---@module "nvim-treesitter"
     ---@type TSConfig
     opts = {
@@ -282,6 +282,8 @@ require("lazy").setup({
         settings = {
           zls = {
             semantic_tokens = "partial",
+            enable_build_on_save = true,
+            build_on_save_step = "check",
           },
         },
       })
