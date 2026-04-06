@@ -521,20 +521,6 @@ require("lazy").setup({
     "j-hui/fidget.nvim",
     opts = {},
   },
-  {
-    "luk400/vim-jukit",
-    ft = "python",
-    init = function()
-      vim.g.jukit_inline_plotting = 1
-      vim.g.jukit_save_output = 0
-      vim.g.jukit_terminal = "tmux"
-      vim.g.jukit_mappings = 1
-      vim.g.jukit_mappings_ext_enabled = {"py", "ipynb"}
-    end,
-    config = function()
-      vim.g.jukit_mpl_style = vim.fn["jukit#util#plugin_path"]() .. '/helpers/matplotlib-backend-kitty/backend.mplstyle'
-    end
-  },
 })
 
 
