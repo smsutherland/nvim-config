@@ -168,6 +168,13 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  desc = "format on write",
+  callback = function()
+    vim.lsp.buf.format()
+  end
+})
+
 -- select LSPs
 vim.lsp.enable({
   "lua_ls",
