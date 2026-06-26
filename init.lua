@@ -173,7 +173,7 @@ vim.lsp.enable({
   "lua_ls",
   "ruff",
   "ty",
-  "pyright",
+  -- "pyright",
   "taplo",
   "texlab",
   "clangd",
@@ -297,14 +297,21 @@ require("lazy").setup({
     end,
   },
   {
-    -- autocompletion
-    "saghen/blink.cmp",
-    -- Only load this plugin once the startup process is complete.
-    event = "VimEnter",
-    -- If we don't specify a version here, then we have to compile the rust portion of the plugin on every update.
-    version = "1.*",
-    ---@module "blink-cmp"
-    ---@type blink.cmp.Config
+    'saghen/blink.cmp',
+    dependencies = {
+      'saghen/blink.lib',
+      -- We don't need to load lazydev every time we load blink.cmp.
+      -- We only want it if we have a lua file.
+      -- That's why we don't specify it as a dependency here.
+      -- It seems to work just fine.
+      -- {
+      --   "folke/lazydev.nvim",
+      --   ft = "lua",
+      -- },
+    },
+    build = function()
+      require('blink.cmp').build():wait(60000)
+    end,
     opts = {
       sources = {
         -- Where do we want to autocomplete from?
@@ -325,17 +332,47 @@ require("lazy").setup({
       },
       signature = { enabled = true },
     },
-    dependencies = {
-      -- We don't need to load lazydev every time we load blink.cmp.
-      -- We only want it if we have a lua file.
-      -- That's why we don't specify it as a dependency here.
-      -- It seems to work just fine.
-      -- {
-      --   "folke/lazydev.nvim",
-      --   ft = "lua",
-      -- },
-    }
   },
+  -- {
+  --   -- autocompletion
+  --   "saghen/blink.cmp",
+  --   -- Only load this plugin once the startup process is complete.
+  --   event = "VimEnter",
+  --   -- If we don't specify a version here, then we have to compile the rust portion of the plugin on every update.
+  --   version = "2.*",
+  --   ---@module "blink-cmp"
+  --   ---@type blink.cmp.Config
+  --   opts = {
+  --     sources = {
+  --       -- Where do we want to autocomplete from?
+  --       default = { "lsp", "path", "snippets", "lazydev" },
+  --       providers = {
+  --         lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+  --       }
+  --     },
+  --     appearance = {
+  --       -- Adjusts spacing for the monospace font.
+  --       nerd_font_variant = "mono",
+  --     },
+  --     completion = {
+  --       documentation = { auto_show = true, auto_show_delay_ms = 500, },
+  --     },
+  --     keymap = {
+  --       preset = "enter",
+  --     },
+  --     signature = { enabled = true },
+  --   },
+  --   dependencies = {
+  --     -- We don't need to load lazydev every time we load blink.cmp.
+  --     -- We only want it if we have a lua file.
+  --     -- That's why we don't specify it as a dependency here.
+  --     -- It seems to work just fine.
+  --     -- {
+  --     --   "folke/lazydev.nvim",
+  --     --   ft = "lua",
+  --     -- },
+  --   }
+  -- },
   {
     -- Default LSP configs and utilities.
     "neovim/nvim-lspconfig",
