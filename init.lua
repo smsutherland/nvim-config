@@ -38,7 +38,7 @@ vim.o.signcolumn = "yes"
 -- trail = trailing spaces
 -- nbsp  = non-breaking spaces
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- When doing a substitution ':s', show the changes being made live in the buffer, before finalizing the command.
 -- "split" means we also create a new window to show all the changes, even ones we can't currently see.
@@ -84,10 +84,9 @@ vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>")
 -- open oil in a floating window.
 -- <C-c> to close it up again.
 -- "g?" to see keymaps while in Oil.
-vim.keymap.set("n", "-",
-  function()
-    require("oil").open_float()
-  end, { desc = "Open Oil" })
+vim.keymap.set("n", "-", function()
+  require("oil").open_float()
+end, { desc = "Open Oil" })
 
 -- Telescope keybinds for searching files
 
@@ -142,7 +141,7 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
 -- LaTeX autocmd
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   desc = "set settings for LaTeX",
-  pattern = { "*.tex", },
+  pattern = { "*.tex" },
   group = vim.api.nvim_create_augroup("LaTeX", { clear = true }),
   callback = function()
     vim.opt_local.wrap = true
@@ -168,12 +167,12 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  desc = "format on write",
-  callback = function()
-    vim.lsp.buf.format()
-  end
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   desc = "format on write",
+--   callback = function()
+--     vim.lsp.buf.format()
+--   end,
+-- })
 
 -- select LSPs
 vim.lsp.enable({
@@ -195,12 +194,12 @@ vim.lsp.enable({
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
   if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
+    error("Error cloning lazy.nvim:\n" .. out)
   end
 end
 
@@ -211,7 +210,7 @@ rtp:prepend(lazypath)
 require("lazy").setup({
   {
     -- Treesitter gives us better syntax highlighting
-    'nvim-treesitter/nvim-treesitter',
+    "nvim-treesitter/nvim-treesitter",
     -- nvim-treesitter uses the main branch now. master is obsolete.
     branch = "main",
     -- When updating or installing the plugin, run ":TSUpdate"
@@ -259,7 +258,7 @@ require("lazy").setup({
           pcall(vim.treesitter.start, ev.buf)
         end,
       })
-    end
+    end,
   },
   {
     -- catppuccin colorscheme
@@ -304,9 +303,9 @@ require("lazy").setup({
     end,
   },
   {
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     dependencies = {
-      'saghen/blink.lib',
+      "saghen/blink.lib",
       -- We don't need to load lazydev every time we load blink.cmp.
       -- We only want it if we have a lua file.
       -- That's why we don't specify it as a dependency here.
@@ -317,7 +316,7 @@ require("lazy").setup({
       -- },
     },
     build = function()
-      require('blink.cmp').build():wait(60000)
+      require("blink.cmp").build():wait(60000)
     end,
     opts = {
       sources = {
@@ -325,14 +324,14 @@ require("lazy").setup({
         default = { "lsp", "path", "snippets", "lazydev" },
         providers = {
           lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
-        }
+        },
       },
       appearance = {
         -- Adjusts spacing for the monospace font.
         nerd_font_variant = "mono",
       },
       completion = {
-        documentation = { auto_show = true, auto_show_delay_ms = 500, },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
       keymap = {
         preset = "enter",
@@ -395,7 +394,10 @@ require("lazy").setup({
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
-            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
+            if
+                path ~= vim.fn.stdpath("config")
+                and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
+            then
               return
             end
           end
@@ -404,24 +406,24 @@ require("lazy").setup({
             runtime = {
               -- Tell the language server which version of Lua you"re using
               -- (most likely LuaJIT in the case of Neovim)
-              version = "LuaJIT"
+              version = "LuaJIT",
             },
             -- Make the server aware of Neovim runtime files
             workspace = {
               checkThirdParty = false,
               library = {
-                vim.env.VIMRUNTIME
-              }
-            }
+                vim.env.VIMRUNTIME,
+              },
+            },
           })
         end,
         capabilities = blink_capabilities,
         settings = {
           Lua = {
-            completion = { callSnipped = "Replace", },
+            completion = { callSnipped = "Replace" },
             diagnostics = { disable = { "missing-fields" } },
-          }
-        }
+          },
+        },
       })
 
       vim.lsp.config("rust_analyzer", {
@@ -477,7 +479,7 @@ require("lazy").setup({
               { "grd", telescope("lsp_definitions"),      desc = "[G]oto [D]efinition" },
               { "gy",  telescope("lsp_type_definitions"), desc = "[G]oto t[Y]pe Definitions" },
               { "gd",  vim.lsp.buf.definition,            desc = "[G]oto [D]efinition" },
-            }
+            },
           })
 
           -- Our LSP client
@@ -504,22 +506,25 @@ require("lazy").setup({
               -- If inlay hints are enabled, green on switch.
               -- Otherwise, yellow off switch.
               icon = function()
-                return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }) and { icon = "󰔢", color = "green" } or
-                    { icon = "󰨚", color = "yellow" }
+                return vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+                    and { icon = "󰔢", color = "green" }
+                    or { icon = "󰨚", color = "yellow" }
               end,
             })
           end
 
           -- Only bind a formatting key if the lsp supports it.
-          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting, event.buf) then
-            wk.add({
-              "<leader>cf",
-              mode = "n",
-              vim.lsp.buf.format,
-              buffer = event.buf,
-              desc = "[F]ormat",
-            })
-          end
+          -- if
+          --     client and client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting, event.buf)
+          -- then
+          -- wk.add({
+          --   "<leader>cf",
+          --   mode = "n",
+          --   vim.lsp.buf.format,
+          --   buffer = event.buf,
+          --   desc = "[F]ormat",
+          -- })
+          -- end
         end,
       })
 
@@ -528,14 +533,14 @@ require("lazy").setup({
         float = { border = "rounded", source = "if_many" },
         signs = {
           text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚',
-            [vim.diagnostic.severity.WARN] = '󰀪',
-            [vim.diagnostic.severity.INFO] = '󰋽',
-            [vim.diagnostic.severity.HINT] = '󰌶',
-          }
+            [vim.diagnostic.severity.ERROR] = "󰅚",
+            [vim.diagnostic.severity.WARN] = "󰀪",
+            [vim.diagnostic.severity.INFO] = "󰋽",
+            [vim.diagnostic.severity.HINT] = "󰌶",
+          },
         },
         virtual_text = {
-          source = 'if_many',
+          source = "if_many",
           spacing = 2,
           format = function(diagnostic)
             local diagnostic_message = {
@@ -590,8 +595,8 @@ require("lazy").setup({
         { "<leader>f", group = "[F]ind", icon = "󰍉" },
         { "<leader>u", group = "[U]i", icon = { icon = "󰙵", color = "cyan" } },
         { "<leader>w", group = "Vim[W]iki", icon = { icon = "󰖬", color = "green" } },
-        { "g", group = "[G]o" }
-      }
+        { "g", group = "[G]o" },
+      },
     },
   },
   {
@@ -603,7 +608,7 @@ require("lazy").setup({
         build = "make",
         cond = function()
           return vim.fn.executable("make") == 1
-        end
+        end,
       },
       "nvim-telescope/telescope-ui-select.nvim",
     },
@@ -612,8 +617,8 @@ require("lazy").setup({
       require("telescope").setup({
         defaults = {
           layout_config = {
-            horizontal = { prompt_position = "top", preview_width = 0.55, },
-            vertical = { mirror = false, },
+            horizontal = { prompt_position = "top", preview_width = 0.55 },
+            vertical = { mirror = false },
             width = 0.87,
             height = 0.8,
             preview_cutoff = 120,
@@ -651,8 +656,8 @@ require("lazy").setup({
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found.
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      }
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
     },
   },
   {
@@ -668,7 +673,7 @@ require("lazy").setup({
     end,
     keys = {
       { "<localleader>l", "", desc = "+vimtex", ft = "tex" },
-    }
+    },
   },
   {
     "vimwiki/vimwiki",
@@ -723,14 +728,55 @@ require("lazy").setup({
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    }
+      { "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
   },
   {
     "j-hui/fidget.nvim",
     opts = {},
   },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        -- Customize or remove this keymap to your liking
+        "<leader>cf",
+        function()
+          require("conform").format({ async = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    -- This will provide type hinting with LuaLS
+    ---@module "conform"
+    ---@type conform.setupOpts
+    opts = {
+      -- Define your formatters
+      formatters_by_ft = {
+        javascript = { "js_beautify" },
+        html = { "html_beautify" },
+        css = { "css_beautify" },
+      },
+      -- Set default options
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
+      -- Set up format-on-save
+      format_on_save = { timeout_ms = 500 },
+      -- Customize formatters
+      formatters = {
+        js_beautify = {
+          append_args = { "-s", "2" },
+        },
+        css_beautify = {
+          append_args = { "-s", "2" },
+        },
+      },
+    },
+  },
 })
-
 
 -- vim: ts=2 sts=2 sw=2 et
