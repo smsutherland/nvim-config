@@ -484,9 +484,14 @@ require("lazy").setup({
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
           -- Only provide the option to toggle inlay hints if the LSP supports inlay hints.
-          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            -- Default inlay hints to on.
-            vim.lsp.inlay_hint.enable(true)
+          if
+              client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
+          then
+            local ft = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+            if ft ~= "tex" then
+              -- Default inlay hints to on for non-tex files.
+              vim.lsp.inlay_hint.enable(true)
+            end
             wk.add({
               "<leader>ui",
               function()
