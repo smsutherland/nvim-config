@@ -492,12 +492,12 @@ require("lazy").setup({
             local ft = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
             if ft ~= "tex" then
               -- Default inlay hints to on for non-tex files.
-              vim.lsp.inlay_hint.enable(true)
+              vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
             end
             wk.add({
               "<leader>ui",
               function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }), { bufnr = event.buf })
               end,
               mode = "n",
               buffer = event.buf,
