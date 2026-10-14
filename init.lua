@@ -110,6 +110,7 @@ vim.keymap.set("n", "<leader>fb", function()
   require("telescope.builtin").buffers()
 end, { desc = "[B]uffers" })
 
+
 --------------------------------------
 ------------AUTOCOMMANDS--------------
 --------------------------------------
@@ -501,7 +502,7 @@ require("lazy").setup({
               end,
               mode = "n",
               buffer = event.buf,
-              desc = "[T]oggle [I]nlay Hints",
+              desc = "Toggle [I]nlay Hints",
               -- which-key feature: set an icon for the binding.
               -- If inlay hints are enabled, green on switch.
               -- Otherwise, yellow off switch.
@@ -595,6 +596,7 @@ require("lazy").setup({
         { "<leader>f", group = "[F]ind", icon = "󰍉" },
         { "<leader>u", group = "[U]i", icon = { icon = "󰙵", color = "cyan" } },
         { "<leader>w", group = "Vim[W]iki", icon = { icon = "󰖬", color = "green" } },
+        { "<leader>g", group = "[G]it", icon = { icon = "", color = "green" } },
         { "g", group = "[G]o" },
       },
     },
@@ -728,7 +730,7 @@ require("lazy").setup({
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
   },
   {
@@ -776,6 +778,46 @@ require("lazy").setup({
         },
       },
     },
+  },
+  {
+    "https://github.com/lewis6991/gitsigns.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      current_line_blame_opts = {
+        delay = 50,
+        virt_text_pos = "right_align",
+      },
+    },
+    config = function(_, opts)
+      local gs = require("gitsigns")
+      local wk = require("which-key")
+      gs.setup(opts)
+      wk.add({
+        {
+          "<leader>ug",
+          function()
+            gs.toggle_current_line_blame()
+          end,
+          mode = "n",
+          desc = "Toggle [G]it Blame",
+          icon = function()
+            local gsc = require('gitsigns.config').config
+            return gsc.current_line_blame
+                and { icon = "󰔢", color = "green" }
+                or { icon = "󰨚", color = "yellow" }
+          end,
+        },
+        {
+          "<leader>gb",
+          function()
+            gs.blame()
+          end,
+          mode = "n",
+          desc = "Show [G]it Blame",
+        }
+      })
+    end
+
   },
 })
 
