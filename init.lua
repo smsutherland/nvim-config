@@ -572,6 +572,13 @@ require("lazy").setup({
         max_height = 0.5,
         max_width = 0.5,
       },
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
+      constrain_cursor = "name",
     },
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
