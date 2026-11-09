@@ -685,6 +685,13 @@ require("lazy").setup({
     },
   },
   {
+    "matze/vim-tex-fold",
+    ft = "tex",
+    config = function()
+      vim.g.tex_fold_additional_envs = { "abstract" }
+    end
+  },
+  {
     "vimwiki/vimwiki",
     ft = "vimwiki",
     cmd = {
